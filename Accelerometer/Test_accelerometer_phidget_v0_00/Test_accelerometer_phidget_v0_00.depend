@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1448637758 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_00\main.cpp
+	<stdio.h>
+	<phidget21.h>
+
+1445339450 c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_00\phidget21.h
+
