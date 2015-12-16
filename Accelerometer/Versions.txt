@@ -1,0 +1,7 @@
+v_0_01 : 2015/12/01
+Mise en place d'une classe de lecture des phidgetSpatial.
+Première version d'un calcul de position du capteur à partir des données fournies.
+
+v_0_00 : 2015/11/27
+Premiers tests fonctionnels d'une lecture de données depuis un phidgetSpatial.
+Ecriture de ces données dans un fichier csv.
