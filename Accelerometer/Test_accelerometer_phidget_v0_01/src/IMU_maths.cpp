@@ -52,8 +52,8 @@ void IMU_maths::writeDataInFile(FILE* file, DATA_FORMAT _df, Sample& data)
                 fflush(file);
             break;
         case TRC:
-                fprintf(file, "%d \t %6f \t ", data.num_frame, data.timestamp);
-                fprintf(file, "%6f \t %6f \t %6f\n", data.position.x, data.position.y, data.position.z);
+                fprintf(file, "%d\t%6f\t", data.num_frame, data.timestamp);
+                fprintf(file, "%6f\t%6f\t%6f\n", data.position.x, data.position.y, data.position.z);
             break;
         }
 }
@@ -68,11 +68,11 @@ void IMU_maths::writeHeaderInFile(FILE* _file, DATA_FORMAT _df)
             break;
 
         case TRC:
-            fprintf(_file, "PathFileType	4	(X/Y/Z)\n");
-            fprintf(_file, "DataRate	CameraRate	NumFrames	NumMarkers	Units	OrigDataRate	OrigDataStartFrame	OrigNumFrames\n");
-            fprintf(_file, "120	120	121	3	mm	120	1	121 \n");
-            fprintf(_file, "Frame#	Time	r_acromion\n");
-            fprintf(_file, "\t\tX1	Y1	Z1\n");
+            fprintf(_file, "PathFileType\t4\t(X/Y/Z)\n");
+            fprintf(_file, "DataRate\tCameraRate\tNumFrames\tNumMarkers\tUnits\tOrigDataRate\tOrigDataStartFrame\tOrigNumFrames\n");
+            fprintf(_file, "16\t120\t121\t3\tm\t120\t1\t121\n");
+            fprintf(_file, "Frame#\tTime\tr_radius_styloid\t\t\n");
+            fprintf(_file, "\t\tX1\tY1\tZ1\n");
 
             break;
         }

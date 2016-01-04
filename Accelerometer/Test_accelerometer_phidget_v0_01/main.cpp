@@ -5,9 +5,9 @@
 int main(int argc, char* argv[])
 {
 	//all done, exit
-    FILE* file = fopen("spatial_data.csv","w");
+    FILE* file = fopen("spatial_data_arm.trc","w");
 
-    ReadSpatialPhidget accelerometer(file, 16, CSV);
+    ReadSpatialPhidget accelerometer(file, 16, TRC);
 
 	//read spatial event data
 	printf("Reading.....\n");

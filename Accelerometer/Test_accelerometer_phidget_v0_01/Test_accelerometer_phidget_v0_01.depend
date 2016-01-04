@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1450262101 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_01\main.cpp
+1450264758 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_01\main.cpp
 	<stdio.h>
 	"ReadSpatialPhidget.h"
 
@@ -13,6 +13,6 @@
 	<stdio.h>
 	<phidget21.h>
 
-1450262470 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_01\src\imu_maths.cpp
+1450264172 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_01\src\imu_maths.cpp
 	"IMU_maths.h"
 
