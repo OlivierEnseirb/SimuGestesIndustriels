@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\leapi\OneDrive\Documents\GitHub\SimuGestesIndustriels\Body\build\CMakeFiles\fe5500cdd4e6197d9f4968628b4e5a30\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{F27825C8-5C5B-3A63-8627-B98782F00FAC}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
