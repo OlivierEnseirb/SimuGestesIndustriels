@@ -1,3 +1,0 @@
-C:/Users/leapi/OneDrive/Documents/workspace_OpenSIM/RightArm/build/CMakeFiles/exampleMain.dir
-C:/Users/leapi/OneDrive/Documents/workspace_OpenSIM/RightArm/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/leapi/OneDrive/Documents/workspace_OpenSIM/RightArm/build/CMakeFiles/ZERO_CHECK.dir
