@@ -115,9 +115,16 @@ int main()
 	jointCoordinateSetH[4].setRange(positionRange);
 	jointCoordinateSetH[5].setRange(positionRange);
 
+	/*// Add a STL file 
+	OpenSim::Body *stlPart = new OpenSim::Body("stlPart", upperArmMass, upperArmCenter, upperArmInertia);
+	stlPart->addDisplayGeometry("drillPart.STL");
+	Vec3 drillLocationInParent(-0.017545, -0.007, 0.17);
+	PinJoint *stlT = new PinJoint("drillJoint", ground, drillLocationInParent, orientationInParent, *stlPart, locationInBody, orientationInBody);*/
+
 	// Add the blocks lowerArm and upperArm to the model
 	osimModel.addBody(upperArm);
 	osimModel.addBody(lowerArm);
+	//osimModel.addBody(stlPart);
 
 	// Define the acceleration of gravity
 	osimModel.setGravity(Vec3(0, -9.80665, 0));
