@@ -1,0 +1,25 @@
+$comment
+Generation des valeurs sortant du clavier
+$end
+$timescale 1us$end
+$scope module logic$end
+$var wire 1 # PB0 $end
+$var wire 1 % PB1 $end
+$var wire 1 & PB2 $end
+$var wire 1 * PB3 $end
+$var wire 1 ( PB4 $end
+$var wire 1 ) PB5 $end
+$var wire 1 [ PB6 $end
+$var wire 1 ] PB7 $end
+$upscope $end
+$enddefinitions $end
+$dumpvars
+x#
+x%
+x&
+x*
+x(
+x)
+x[
+x]
+$end

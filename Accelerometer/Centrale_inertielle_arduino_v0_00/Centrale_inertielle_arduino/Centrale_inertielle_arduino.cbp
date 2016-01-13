@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Centrale_inertielle_arduino" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Centrale_inertielle_arduino" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Centrale_inertielle_arduino" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++11" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="IMU_maths.cpp" />
+		<Unit filename="IMU_maths.h" />
+		<Unit filename="ReadSerialCom.cpp" />
+		<Unit filename="ReadSerialCom.h" />
+		<Unit filename="Sample.cpp" />
+		<Unit filename="Sample.h" />
+		<Unit filename="VCD_definitions.h" />
+		<Unit filename="calculateTimestamp.cpp" />
+		<Unit filename="calculateTimestamp.h" />
+		<Unit filename="init.txt" />
+		<Unit filename="main.cpp" />
+		<Unit filename="settings.cpp" />
+		<Unit filename="settings.h" />
+		<Unit filename="uart_gestion.cpp" />
+		<Unit filename="uart_gestion.h" />
+		<Unit filename="write_file.cpp" />
+		<Unit filename="write_file.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -27,9 +27,11 @@
 		</Compiler>
 		<Unit filename="include/IMU_maths.h" />
 		<Unit filename="include/ReadSpatialPhidget.h" />
+		<Unit filename="include/Sample.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/IMU_maths.cpp" />
 		<Unit filename="src/ReadSpatialPhidget.cpp" />
+		<Unit filename="src/Sample.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

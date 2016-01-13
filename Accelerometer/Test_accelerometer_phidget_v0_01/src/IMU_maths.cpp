@@ -78,7 +78,12 @@ void IMU_maths::writeHeaderInFile(FILE* _file, DATA_FORMAT _df)
         }
 }
 
-void IMU_maths::displaySample(Sample& _samp)
+Sample IMU_maths::getDefaultSample()
+{
+    return *defaultSample;
+}
+
+/*void IMU_maths::displaySample(Sample& _samp)
 {
     printf("Sample %3d, timestamp %f s :\n", _samp.num_frame, _samp.timestamp);
     printf("\t acc x = %f, acc y = %f, acc z = %f\n", _samp.acceleration.x, _samp.acceleration.y, _samp.acceleration.z);
@@ -86,4 +91,4 @@ void IMU_maths::displaySample(Sample& _samp)
     printf("\t mag x = %f, mag y = %f, mag z = %f\n", _samp.magneticField.x, _samp.magneticField.y, _samp.magneticField.z);
     printf("\t vel x = %f, vel y = %f, vel z = %f\n", _samp.velocity.x, _samp.velocity.y, _samp.velocity.z);
     printf("\t pos x = %f, pos y = %f, pos z = %f\n", _samp.position.x, _samp.position.y, _samp.position.z);
-}
+}*/

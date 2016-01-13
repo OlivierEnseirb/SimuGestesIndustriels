@@ -1,18 +1,25 @@
 # depslib dependency file v1.0
-1450264758 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_01\main.cpp
+1452154451 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_01\main.cpp
 	<stdio.h>
 	"ReadSpatialPhidget.h"
 
-1450261247 c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_01\include\readspatialphidget.h
+1452163452 c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_01\include\readspatialphidget.h
 	"IMU_maths.h"
 
-1450261311 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_01\src\readspatialphidget.cpp
+1452154451 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_01\src\readspatialphidget.cpp
 	"ReadSpatialPhidget.h"
 
-1450261345 c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_01\include\imu_maths.h
+1452163395 c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_01\include\imu_maths.h
 	<stdio.h>
 	<phidget21.h>
+	"Sample.h"
 
-1450264172 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_01\src\imu_maths.cpp
+1452161370 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_01\src\imu_maths.cpp
 	"IMU_maths.h"
+
+1452163424 c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_01\include\sample.h
+	<stdio.h>
+
+1452161794 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\test_accelerometer_phidget_v0_01\src\sample.cpp
+	"Sample.h"
 

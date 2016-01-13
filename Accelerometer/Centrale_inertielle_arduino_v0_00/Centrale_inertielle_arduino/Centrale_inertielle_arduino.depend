@@ -1,0 +1,78 @@
+# depslib dependency file v1.0
+1448193318 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\settings.cpp
+	"settings.h"
+
+1448193318 c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\settings.h
+	<iostream>
+	<cstdlib>
+	<fstream>
+	<string>
+
+1452690579 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\main.cpp
+	<iostream>
+	<string>
+	"ReadSerialCom.h"
+
+1452603179 c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\uart_gestion.h
+	<iostream>
+	<windows.h>
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<string>
+	<sstream>
+
+1452602368 c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\write_file.h
+	<iostream>
+	<cstdlib>
+	<fstream>
+	<chrono>
+	<vector>
+	"VCD_definitions.h"
+	"calculateTimestamp.h"
+
+1448452724 c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\vcd_definitions.h
+
+1448452724 c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\calculatetimestamp.h
+	<stdio.h>
+	<time.h>
+	<windows.h>
+
+1448452724 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\calculatetimestamp.cpp
+	"calculateTimestamp.h"
+
+1450191087 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\write_file.cpp
+	"write_file.h"
+
+1452671833 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\uart_gestion.cpp
+	"uart_gestion.h"
+
+1452688705 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\sample.cpp
+	"Sample.h"
+
+1452690334 c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\sample.h
+	<stdio.h>
+
+1452690717 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\imu_maths.cpp
+	"IMU_maths.h"
+
+1452691127 c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\imu_maths.h
+	<stdio.h>
+	<phidget21.h>
+	<cmath>
+	"Sample.h"
+
+1452671943 c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\readserialcom.h
+	"IMU_maths.h"
+	"settings.h"
+	"uart_gestion.h"
+
+1452688649 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\readserialcom.cpp
+	"ReadSerialCom.h"
+
+1452688101 c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\include\quaternion.h
+	<stdio.h>
+
+1452688101 source:c:\users\olivier\documents\github\simugestesindustriels\accelerometer\centrale_inertielle_arduino_v0_00\centrale_inertielle_arduino\src\quaternion.cpp
+	"Quaternion.h"
+

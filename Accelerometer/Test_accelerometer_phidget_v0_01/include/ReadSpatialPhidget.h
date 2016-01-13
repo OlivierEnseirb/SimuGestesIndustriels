@@ -10,7 +10,10 @@
 //#include <phidget21.h>
 #include "IMU_maths.h"
 
-//callback that will run if the Spatial is attached to the computer
+/** callback that will run if the Spatial is attached to the computer
+* @param spatial
+* @param userptr
+*/
 int CCONV AttachHandler(CPhidgetHandle spatial, void *userptr);
 
 //callback that will run if the Spatial is detached from the computer
@@ -70,8 +73,8 @@ class ReadSpatialPhidget : public IMU_maths
 
         void setNewSample(CPhidgetSpatial_SpatialEventDataHandle* data_in, size_t data_indice);
 
-        Sample new_sample = defaultSample;
-        Sample previous_sample = defaultSample;
+        Sample new_sample = getDefaultSample();
+        Sample previous_sample = getDefaultSample();
 
         void setAssocietedFilePointer(FILE * _file){associatedFile = _file;}
         FILE* getAssocietedFilePointer(){return associatedFile;}
