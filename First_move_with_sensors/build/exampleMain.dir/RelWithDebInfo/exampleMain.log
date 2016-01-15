@@ -1,0 +1,32 @@
+﻿Build started 14/01/2016 09:31:17.
+     1>Project "C:\Users\Olivier\Desktop\ExampleMain\build\exampleMain.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /I\Vendors /I"C:\OpenSim 3.3\sdk\include\SimTK\include" /I"C:\OpenSim 3.3\sdk\include" /Zi /nologo /W3 /WX- /O2 /Ob1 /D WIN32 /D _WINDOWS /D NDEBUG /D "CMAKE_INTDIR=\"RelWithDebInfo\"" /D _MBCS /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"exampleMain.dir\RelWithDebInfo\\" /Fd"exampleMain.dir\RelWithDebInfo\vc140.pdb" /Gd /TP /errorReport:prompt C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp
+         TugOfWar1_CreateModel.cpp
+     1>C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(24): error C3861: 'getch': identifier not found
+     1>C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(24): error C2050: switch expression not integral
+     1>C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(25): error C2065: 'KEY_UP': undeclared identifier
+     1>C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(25): error C2131: expression did not evaluate to a constant
+         C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(25): note: failure was caused by non-constant arguments or reference to a non-constant symbol
+         C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(25): note: see usage of 'KEY_UP'
+     1>C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(29): error C2065: 'KEY_DOWN': undeclared identifier
+     1>C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(29): error C2131: expression did not evaluate to a constant
+         C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(29): note: failure was caused by non-constant arguments or reference to a non-constant symbol
+         C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(29): note: see usage of 'KEY_DOWN'
+     1>C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(33): error C2065: 'KEY_LEFT': undeclared identifier
+     1>C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(33): error C2131: expression did not evaluate to a constant
+         C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(33): note: failure was caused by non-constant arguments or reference to a non-constant symbol
+         C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(33): note: see usage of 'KEY_LEFT'
+     1>C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(37): error C2065: 'KEY_RIGHT': undeclared identifier
+     1>C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(37): error C2131: expression did not evaluate to a constant
+         C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(37): note: failure was caused by non-constant arguments or reference to a non-constant symbol
+         C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(37): note: see usage of 'KEY_RIGHT'
+     1>C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(25): error C2051: case expression not constant
+     1>C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(29): error C2051: case expression not constant
+     1>C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(33): error C2051: case expression not constant
+     1>C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp(37): error C2051: case expression not constant
+     1>Done Building Project "C:\Users\Olivier\Desktop\ExampleMain\build\exampleMain.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:23.60

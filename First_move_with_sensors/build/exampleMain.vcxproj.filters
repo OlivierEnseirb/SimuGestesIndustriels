@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\IMU_maths.cpp" />
+    <ClCompile Include="..\ReadSerialCom.cpp" />
+    <ClCompile Include="..\Sample.cpp" />
+    <ClCompile Include="..\settings.cpp" />
+    <ClCompile Include="..\uart_gestion.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Olivier\Desktop\ExampleMain\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{6993F12B-1201-33E4-9CD2-B0BD958BFC04}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\uart_gestion.h" />
+    <ClInclude Include="..\IMU_maths.h" />
+    <ClInclude Include="..\ReadSerialCom.h" />
+    <ClInclude Include="..\Sample.h" />
+    <ClInclude Include="..\settings.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\init.txt" />
+  </ItemGroup>
+</Project>

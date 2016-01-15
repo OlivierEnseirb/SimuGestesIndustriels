@@ -1,0 +1,30 @@
+﻿Build started 14/01/2016 11:02:09.
+     1>Project "C:\Users\Olivier\Desktop\ExampleMain\build\exampleMain.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /I\Vendors /I"C:\OpenSim 3.3\sdk\include\SimTK\include" /I"C:\OpenSim 3.3\sdk\include" /nologo /W3 /WX- /O2 /Ob2 /D WIN32 /D _WINDOWS /D NDEBUG /D "CMAKE_INTDIR=\"Release\"" /D _MBCS /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"exampleMain.dir\Release\\" /Fd"exampleMain.dir\Release\vc140.pdb" /Gd /TP /errorReport:prompt C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp
+         TugOfWar1_CreateModel.cpp
+     1>c:\users\olivier\desktop\examplemain\Sample.h(67): warning C4521: 'Sample': multiple copy constructors specified
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Olivier\Desktop\ExampleMain\build\Release\exampleMain.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:/OpenSim 3.3/sdk/lib" /LIBPATH:"C:/OpenSim 3.3/sdk/lib/Release" /LIBPATH:"C:/OpenSim 3.3/lib" /LIBPATH:"C:/OpenSim 3.3/lib/Release" /LIBPATH:"C:/OpenSim 3.3/bin" /LIBPATH:"C:/OpenSim 3.3/bin/Release" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib osimSimulation.lib osimActuators.lib osimCommon.lib osimAnalyses.lib osimTools.lib OpenSim_SimTKcommon.lib OpenSim_SimTKmath.lib OpenSim_SimTKsimbody.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"C:/Users/Olivier/Desktop/ExampleMain/build/Release/exampleMain.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/Olivier/Desktop/ExampleMain/build/Release/exampleMain.lib" /MACHINE:X64  /machine:x64 exampleMain.dir\Release\IMU_maths.obj
+         exampleMain.dir\Release\ReadSerialCom.obj
+         exampleMain.dir\Release\Sample.obj
+         exampleMain.dir\Release\settings.obj
+         exampleMain.dir\Release\uart_gestion.obj
+         exampleMain.dir\Release\TugOfWar1_CreateModel.obj
+         exampleMain.vcxproj -> C:\Users\Olivier\Desktop\ExampleMain\build\Release\exampleMain.exe
+       PostBuildEvent:
+         setlocal
+         "C:\Program Files (x86)\CMake\bin\cmake.exe" -E copy C:/Users/Olivier/Desktop/ExampleMain/blockMesh.obj C:/Users/Olivier/Desktop/ExampleMain/build
+         if %errorlevel% neq 0 goto :cmEnd
+         :cmEnd
+         endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+         :cmErrorLevel
+         exit /b %1
+         :cmDone
+         if %errorlevel% neq 0 goto :VCEnd
+         :VCEnd
+     1>Done Building Project "C:\Users\Olivier\Desktop\ExampleMain\build\exampleMain.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:09.66
