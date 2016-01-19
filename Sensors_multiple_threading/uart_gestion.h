@@ -75,7 +75,7 @@ public:
     UART_gestion();
     ~UART_gestion();
 
-    bool OpenCOM(int nId);
+    bool OpenCOM(int nId, string& error_message);
     bool CloseCOM(void);
     bool ReadCOM(void* buffer, int nBytesToRead, int* pBytesRead);
     bool WriteCOM(void* buffer, int nBytesToWrite, int* pBytesWritten);

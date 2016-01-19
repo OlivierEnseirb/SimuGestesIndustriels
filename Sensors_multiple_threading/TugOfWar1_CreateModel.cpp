@@ -40,8 +40,8 @@ int main()
 
 		unsigned char data_to_write = ENABLE_EULER; // data to write into the file : EULER, ACCELERATION, VELOCITY... cf Sample.h
 		unsigned char data_to_display = ENABLE_NOTHING; // data to display each time a sample is got
-
-		Multiple_Sensor_Reading msr(data_file, CSV, data_to_write, data_to_display); // launch communication with sensors in parallel threads
+		double waiting_time = 10; //seconds
+		Multiple_Sensor_Reading msr(data_file, CSV, data_to_write, data_to_display, waiting_time); // launch communication with sensors in parallel threads
 
 		printf("Reading.....\n");
 		printf("Enter any key then tap enter to stop the program.\n");

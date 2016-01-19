@@ -24,7 +24,7 @@ wstring UART_gestion::s2ws(const std::string& s)
 }
 
 //FONCTION D'OUVERTURE DU PORT COM ET DE SA CONFIGURATION
-bool UART_gestion::OpenCOM(int nId){
+bool UART_gestion::OpenCOM(int nId, string& error_message){
 
     //construction du nom du port COM
     stringstream ss;
@@ -45,17 +45,21 @@ bool UART_gestion::OpenCOM(int nId){
     // valid handle to template, NULL = le paramètre est ignoré
 
     if(g_hCOM == INVALID_HANDLE_VALUE){
-        cout << "erreur d'ouverture de la com serie" << endl;
+		error_message = "erreur d'ouverture de la com serie";
+        //cout << "erreur d'ouverture de la com serie" << endl;
 
         if (GetLastError() == ERROR_FILE_NOT_FOUND) {
-          cout <<"The system cannot find the file specified" << endl;  //error code 0x02
+			error_message = "The system cannot find the file specified";
+			//cout <<"The system cannot find the file specified" << endl;  //error code 0x02
         }
         else if(GetLastError() == ERROR_INVALID_NAME) {
-          cout << "filename, directory name, or volume label syntax is incorrect" << endl;  //error code 0x7B
+			error_message = "filename, directory name, or volume label syntax is incorrect";
+			//cout << "filename, directory name, or volume label syntax is incorrect" << endl;  //error code 0x7B
         }
         else
         {
-          cout << "Handle creation error code" << GetLastError() << endl;
+			error_message = "Handle creation error code" + GetLastError();
+			//cout << "Handle creation error code" << GetLastError() << endl;
         }
 
 
@@ -93,7 +97,12 @@ bool UART_gestion::ReadCOM(void *buffer, int nBytesToRead, int *pBytesRead){
      * pointeur vers un buffer qui va recevoir les données lues
      * nombre d'octets max à lire
      * pointeur vers le buffer qui reçoit le nombre d'octets lus
-     * paramètre non utile dans notre cas*/
+     * paramètre non utile dans notre cas
+	 
+	 * Return value
+	 *	If the function succeeds, the return value is nonzero (TRUE).
+	 *	If the function fails, or is completing asynchronously, the return value is zero (FALSE). To get extended error information, call the GetLastError function.
+	 */
 }
 
 //FONCTION D'ECRITURE SUR LE PORT COM

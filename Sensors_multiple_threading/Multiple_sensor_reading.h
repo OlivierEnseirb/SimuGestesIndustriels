@@ -9,17 +9,17 @@
 #include <mutex>
 #include "IMU_maths.h"
 
-class ReadSerialCom;
+class ReadSerialCom; // class declared somewhere else and included in .cpp
 
 class Multiple_Sensor_Reading : public IMU_maths
 {
 	public:
 		Multiple_Sensor_Reading() {}
 		~Multiple_Sensor_Reading() {}
-		Multiple_Sensor_Reading(FILE* _data_file, DATA_FORMAT _df, unsigned char data_to_write, unsigned char data_to_display);
+		Multiple_Sensor_Reading(FILE* _data_file, DATA_FORMAT _df, unsigned char data_to_write, unsigned char data_to_display, double waiting_time);
 
-		void addNewSample(Sample& _s, int num_com);
-	
+		void addNewSample(Sample& _s, int num_thread);
+		void closeThread(int num_thread);
 		void stopReading();
 
 		void setAssocietedFilePointer(FILE * _file) { associatedFile = _file; }
@@ -31,10 +31,10 @@ class Multiple_Sensor_Reading : public IMU_maths
 		void setDataToWrite(unsigned char _data_to_write) { data_to_write = _data_to_write; }
 		unsigned char getDataToWrite() { return data_to_write; }
 
-		vector<thread> sens_thr;
-		vector<ReadSerialCom*> sens_com;
-		vector<vector<string> > sens_joint_link;
-		vector<vector<Sample> > sens_samples;
+		vector<thread> sens_thr; // 1 thread by sensor
+		vector<ReadSerialCom*> sens_com; // 1 element by thread
+		vector<vector<string> > sens_joint_link;// 1 element by thread
+		vector<vector<Sample> > sens_samples;// 1 element by thread
 
 	private:
 

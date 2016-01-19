@@ -1,6 +1,7 @@
 #ifndef READSERIALCOM_H
 #define READSERIALCOM_H
 
+#include <ctime>
 #include "IMU_maths.h"
 #include "settings.h"
 #include "uart_gestion.h"
@@ -12,32 +13,33 @@ using namespace std;
 #define NEW_SAMPLE_CLUE     '\n'
 #define SEPARATING_CLUE     ','
 
-class Multiple_Sensor_Reading;
+class Multiple_Sensor_Reading; // class declared somewhere else and included in .cpp
 
 class ReadSerialCom
 {
     public:
         ReadSerialCom(){}
-        ReadSerialCom(int _num_com, int _num_port); //num_port is the portof the computer where is the arduino
+        ReadSerialCom(int _num_thread, int _num_port); //num_port is the portof the computer where is the arduino
         ~ReadSerialCom();
 
         void initSerialCommunication(int _num_com, int _num_port);
-        bool openSerialCommunication();
+        bool openSerialCommunication(double waiting_time);
         void closeSerialCommunication();
-        void readSerialCommunication();
-		void launchSerialCom(Multiple_Sensor_Reading* msr);
+        bool readSerialCommunication();
+		bool launchSerialCommunication(Multiple_Sensor_Reading* msr, double waiting_time);
 
         void appendNewDataToBuffer();
         bool waitNewDataClue(size_t& pos);
         void setNewSample(string& newSampleString);
         void convertStringToSample(string& newSampleString, Sample& _sample);
+		bool checkGoodCommunication(double limit_time);
 
         Sample new_sample = defaultSample;
         Sample previous_sample = defaultSample;
 
-
-		int getNumCom() { return num_com; }
-		void setNumCom(int _nc) { num_com = _nc; }
+		int getNumThread() { return num_thread; }
+		void setNumThread(int _nt) { num_thread = _nt; }
+		int getNumPort() { return set_data->getComNumber(); }
 
 		bool keep_processing = true;
 
@@ -52,7 +54,8 @@ class ReadSerialCom
         int nb_bytes_read;
         bool isSynchronised = false;
 
-		int num_com = 0;
+		int num_thread = 0;
+		time_t last_time_data_obtained;
 };
 
 #endif // READSERIALCOM_H

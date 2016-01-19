@@ -12,15 +12,22 @@ ReadSerialCom::~ReadSerialCom()
     closeSerialCommunication();
 }
 
-void ReadSerialCom::launchSerialCom(Multiple_Sensor_Reading* msr)
-{
-	if (openSerialCommunication())
+bool ReadSerialCom::launchSerialCommunication(Multiple_Sensor_Reading* msr, double waiting_time)
+{ //return false when communication is lost else true at the end of the function
+	if (openSerialCommunication(waiting_time))
 	{
 		size_t pos = 0;
 
 		while (keep_processing)
 		{
-			readSerialCommunication();
+			if (!readSerialCommunication())
+				return false;
+
+			if (!checkGoodCommunication(5)) {
+				cout << "Time to long between two communications on Serial COM "<< getNumPort()<<"." << endl;
+				return false;
+			}
+
 			appendNewDataToBuffer();
 			if (waitNewDataClue(pos))
 			{
@@ -29,7 +36,7 @@ void ReadSerialCom::launchSerialCom(Multiple_Sensor_Reading* msr)
 				if (isSynchronised)
 				{
 					setNewSample(sub_str);
-					msr->addNewSample(new_sample, getNumCom());
+					msr->addNewSample(new_sample, getNumThread());
 				}
 				else
 				{
@@ -37,12 +44,14 @@ void ReadSerialCom::launchSerialCom(Multiple_Sensor_Reading* msr)
 				}
 			}
 		}
+		return true;
 	}
+	return true;
 }
 
-void ReadSerialCom::initSerialCommunication(int _num_com, int _num_port)
+void ReadSerialCom::initSerialCommunication(int _num_thread, int _num_port)
 {
-	setNumCom(_num_com);
+	setNumThread(_num_thread);
 
     //lecture du fichier de config et récupération des données
     set_data->getSettings("init.txt");
@@ -52,24 +61,31 @@ void ReadSerialCom::initSerialCommunication(int _num_com, int _num_port)
     serial_com->SetDcbStructure(set_data->getBaud(), set_data->getNbBits(), set_data->getBitsStop(), set_data->getParity());
 }
 
-bool ReadSerialCom::openSerialCommunication()
+bool ReadSerialCom::openSerialCommunication(double waiting_time)
 {
     //ouverture du port com en fonction du numéro donné dans le fichier de config
     cout << "tentative d'ouverture du COM" << set_data->getComNumber() << endl;
 
-	/*float init_time = getTime();
-	while (!(serial_com->OpenCOM(set_data->getComNumber())))
+	time_t init_time, current_time;
+	time(&init_time); //get time at the begining of the function
+
+	string error_message;
+
+	while (!(serial_com->OpenCOM(set_data->getComNumber(), error_message)))
 	{
-		if ((getTime() - init_time) > limit_time)
+		time(&current_time);
+		if (difftime(current_time, init_time) > waiting_time)
 		{
-			cout << " La COM" << set_data->getComNumber() << " n'a pas pu être ouverte." << endl;
+			cout << "COM Serie " << set_data->getComNumber() << " n'a pas pu etre ouverte apres " << waiting_time <<" senconds." << endl;
+			cout << "Message d'erreur : " << error_message << endl;
 			return false;
 		}
 	}
-	cout << "COM Serie ouverte et prete a l'emploi" << endl;
+	time(&last_time_data_obtained);
+	cout << "COM Serie "<< set_data->getComNumber() << " ouverte et prete a l'emploi." << endl;
 	return true;
-	*/
-
+	
+	/*
     if( serial_com->OpenCOM(set_data->getComNumber())){
         //la communication série est ouverture
         cout << "COM Serie ouverte et prete a l'emploi" << endl;
@@ -79,18 +95,18 @@ bool ReadSerialCom::openSerialCommunication()
     {
         cout<<" La COM" << set_data->getComNumber() << " n'a pas pu être ouverte."<<endl;
         return false;
-    }
+    }*/
 }
 
 void ReadSerialCom::closeSerialCommunication()
 {
-    cout << "fermeture de la communication" << endl;
+	cout << "COM Serie " << set_data->getComNumber() << " fermee." << endl;
     serial_com->CloseCOM();
 }
 
-void ReadSerialCom::readSerialCommunication()
+bool ReadSerialCom::readSerialCommunication()
 {
-    serial_com->ReadCOM(buffer, BUFF_SIZE, &nb_bytes_read);
+    return serial_com->ReadCOM(buffer, BUFF_SIZE, &nb_bytes_read);
 }
 
 void ReadSerialCom::setNewSample(string& newSampleString)
@@ -152,4 +168,13 @@ bool ReadSerialCom::waitNewDataClue(size_t& pos)
 {
     pos = big_buffer.find_first_of(NEW_SAMPLE_CLUE);
     return pos != big_buffer.npos;
+}
+
+bool ReadSerialCom::checkGoodCommunication(double limit_time)
+{
+	time_t current_time;
+	time(&current_time);
+	bool temp = (difftime(current_time, last_time_data_obtained) < limit_time);
+	last_time_data_obtained = current_time;
+	return temp;
 }
