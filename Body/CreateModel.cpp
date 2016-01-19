@@ -8,7 +8,7 @@
 
 //==============================================================================
 //==============================================================================
-#include <OpenSim/OpenSim.h>
+#include <OpenSim/OpenSim.h>createBodyPropMap
 #include <string>
 #include <map>
 #include <exception>
@@ -43,14 +43,14 @@ void createBodyNamesMap(std::map< string, vector<string> > &bodyNames, std::map<
 	bodyNames["ulna_r"] = { "ulna_rv" };
 	bodyNames["radius_r"] = { "radius_rv" };
 	bodyNames["hand_r"] = { "pisiform", "lunate", "scaphoid", "triquetrum", "hamate", "capitate", "trapezoid", "trapezium", "metacarpal2", "index_proximal", "index_medial", "index_distal", "metacarpal3", "middle_proximal", "middle_medial", "middle_distal", "metacarpal4", "ring_proximal", "ring_medial", "ring_distal", "metacarpal5", "little_proximal", "little_medial", "little_distal", "metacarpal1", "thumb_proximal", "thumb_distal" };
-	suffix["hand_r"] = "_rsv";
+	suffix["hand_r"] = "_rvs";
 
 	//Left arm
 	bodyNames["humerus_l"] = { "humerus_lv" };
 	bodyNames["ulna_l"] = { "ulna_lv" };
 	bodyNames["radius_l"] = { "radius_lv" };
 	bodyNames["hand_l"] = { "pisiform", "lunate", "scaphoid", "triquetrum", "hamate", "capitate", "trapezoid", "trapezium", "metacarpal2", "index_proximal", "index_medial", "index_distal", "metacarpal3", "middle_proximal", "middle_medial", "middle_distal", "metacarpal4", "ring_proximal", "ring_medial", "ring_distal", "metacarpal5", "little_proximal", "little_medial", "little_distal", "metacarpal1", "thumb_proximal", "thumb_distal" };
-	suffix["hand_l"] = "_lsv";
+	suffix["hand_l"] = "_lvs";
 }
 
 //Properties of the body part (can be skiped)
@@ -88,50 +88,60 @@ void createJointNamesMap(std::map< string, vector<string> > &jointNames) {
 }
 
 //Properties of the joints (can be skiped)
-void createJointPropMap (std::map< string, Vec3 > &jointProp) {
+void createJointPropMap(std::map< string, Vec3 > &jointProp) {
+	jointProp["back"] = Vec3(-0.1007, 0.0815, 0);
+
+	//Legs
 	jointProp["hip_r"] = Vec3(-0.0707, -0.0661, 0.0835);
+	jointProp["knee_r"] = Vec3(0.0, -0.39, 0.0);
 	jointProp["ankle_r"] = Vec3(0, -0.43, 0);
 	jointProp["subtalar_r"] = Vec3(-0.04877, -0.04195, 0.00792);
 	jointProp["mtp_r"] = Vec3(0.1788, -0.002, 0.00108);
+
 	jointProp["hip_l"] = Vec3(-0.0707, -0.0661, -0.0835);
+	jointProp["knee_l"] = Vec3(0.0, -0.39, 0.0);
 	jointProp["ankle_l"] = Vec3(0, -0.43, 0);
 	jointProp["subtalar_l"] = Vec3(-0.04877, -0.04195, -0.00792);
 	jointProp["mtp_l"] = Vec3(0.1788, -0.002, -0.00108);
-	jointProp["back"] = Vec3(-0.1007, 0.0815, 0);
+
+	//Arms
 	jointProp["acromial_r"] = Vec3(0.003155, 0.3715, 0.17);
 	jointProp["elbow_r"] = Vec3(0.013144, -0.286273, -0.009595);
 	jointProp["radioulnar_r"] = Vec3(-0.006727, -0.013007, 0.026083);
 	jointProp["radius_hand_r"] = Vec3(-0.008797, -0.235841, 0.01361);
-	jointProp["acromial_r"] = Vec3(0.003155, 0.3715, -0.17);
-	jointProp["elbow_r"] = Vec3(0.013144, -0.286273, 0.009595);
-	jointProp["radioulnar_r"] = Vec3(-0.006727, -0.013007, -0.026083);
-	jointProp["radius_hand_r"] = Vec3(-0.008797, -0.235841, -0.01361);
+
+	jointProp["acromial_l"] = Vec3(0.003155, 0.3715, -0.17);
+	jointProp["elbow_l"] = Vec3(0.013144, -0.286273, 0.009595);
+	jointProp["radioulnar_l"] = Vec3(-0.006727, -0.013007, -0.026083);
+	jointProp["radius_hand_l"] = Vec3(-0.008797, -0.235841, -0.01361);
 }
 
 int main()
 {
+	cout << "What" << endl;
 	//Creation of the model which will be composed of all the elements
 	Model osimModel;
+	//Model osimCreated ("FullBodyModel_Hamner2010_v2_0.osim");
 	osimModel.setName("bodyModel");
 	//Allow real time visualization of the model
 	//osimModel.setUseVisualizer(true);
 
 	// Get a reference to the model's ground body
 	OpenSim::Body& ground = osimModel.getGroundBody();
-
+	cout << "what" << endl;
 	//Map associating body part name and the bones that are in this body part
 	std::map< string, vector<string> > bodyNames;
-	
+
 	//Map associating the body part name and the suffix necessary to acces the .VTP bone file
 	std::map<string, string> suffix;
 
 	//Creates the bodyNames map and the suffix map
 	createBodyNamesMap(bodyNames, suffix);
-
+	cout << "whatt" << endl;
 	//Properties of the body part (can be skiped)
 	std::map< string, vector<double> > bodyProp;
 	createBodyPropMap(bodyProp);
-
+	cout << "whhat" << endl;
 	Vec3 center(0);
 	std::string name, suf;
 	Inertia inertia;
@@ -163,11 +173,11 @@ int main()
 	//Properties of the joints (can be skiped)
 	std::map< string, Vec3 > jointProp;
 	createJointPropMap(jointProp);
-	
+
 	//Create a new pin joint between the ground and the pelvis
 	Vec3 locationInParent(0), orientationInParent(0), locationInBody(0), orientationInBody(0);
 	PinJoint *ground_pelvis = new PinJoint("ground_pelvis", ground, locationInParent, orientationInParent, *bodies["pelvis"], locationInBody, orientationInBody);
-
+	cout << "hello" << endl;
 	//Contains all the joints accessible by their joints names
 	std::map< string, OpenSim::FreeJoint* > joints;
 	double positionRange[2] = { -0.01, 0.01 };
@@ -193,14 +203,56 @@ int main()
 		jointCoordinateSetH[4].setRange(positionRange);
 		jointCoordinateSetH[5].setRange(positionRange);
 	}
-	
-	// Add every body to the model
-	for (std::map< string, OpenSim::Body* >::const_iterator it = bodies.begin(); it != bodies.end(); ++it) {
-		cout << bodies[it->first]->getName() << endl;
-		OpenSim::Body *b(it->second);
-		osimModel.addBody(b);
-	}
 
+	// Add every body to the model
+	/*for (std::map< string, OpenSim::Body* >::const_iterator it = bodies.begin(); it != bodies.end(); ++it) {
+	OpenSim::Body *b(it->second);
+	osimModel.addBody(b);
+	}*/
+	cout << "hello1" << endl;
+	// Add every body to the model
+	std::map< string, OpenSim::Body* > bodies_copy(bodies);
+	int loop = 0, number = 0;
+	enum AddedState { NOT_ADDED, ADDED, NOT_FOUND };
+	AddedState addState = NOT_FOUND;
+	while (bodies_copy.size()>0)
+	{
+		//Go thought all the bodies in the map bodies
+		for (std::map< string, OpenSim::Body* >::const_iterator it = bodies_copy.begin(); it != bodies_copy.end(); ++it)
+		{
+			string body_name = it->first;
+			//cout << "Body Name : "<<body_name << endl;
+			addState = NOT_FOUND;
+			for (std::map< string, vector<string> >::const_iterator it_joint = jointNames.begin(); it_joint != jointNames.end(); ++it_joint)
+			{
+				string child_name = it_joint->second[1];
+				//cout << "child_name : " << child_name << endl;
+				if (child_name.compare(body_name) != 0)
+					continue;
+
+				string parent_name = it_joint->second[0];
+				//cout << "parent_name : " << parent_name << endl;
+				if (bodies_copy.find(parent_name) == bodies_copy.end())
+				{// parent has already been added in Model
+					addState = ADDED;
+					//cout << "Added"<<endl;
+				}
+				else
+				{// the parent is still in the list
+				 //cout << "No added" << endl;
+					addState = NOT_ADDED;
+				}
+				break;
+			}
+			if (addState == ADDED || addState == NOT_FOUND)
+			{
+				osimModel.addBody(it->second);
+				bodies_copy.erase(it);
+				break;
+			}
+		}
+	}
+	cout << "hello2" << endl;
 	// Define the acceleration of gravity
 	osimModel.setGravity(Vec3(0, -9.80665, 0));
 
