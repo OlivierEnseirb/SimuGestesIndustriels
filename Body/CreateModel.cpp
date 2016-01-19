@@ -8,6 +8,7 @@
 
 //==============================================================================
 //==============================================================================
+
 #include <OpenSim/OpenSim.h>createBodyPropMap
 #include <string>
 #include <map>
@@ -116,19 +117,26 @@ void createJointPropMap(std::map< string, Vec3 > &jointProp) {
 	jointProp["radius_hand_l"] = Vec3(-0.008797, -0.235841, -0.01361);
 }
 
+void createMuscleMap(std::map< string, vector<pair<string, Vec3> >> &muscles) {
+	//Arms
+	muscles["TriLong"] = { { "torso", Vec3(-0.01, 0.36, 0.14723) },{ "humerus_r", Vec3(-0.02714, -0.11441, -0.00664) },{ "humerus_r", Vec3(-0.03184, -0.22637, -0.01217) },{ "humerus_r", Vec3(-0.01743, -0.26757, -0.01208) },{ "radius_r", Vec3(-0.0219, 0.01046, -0.00078) } };
+	muscles["TriLat"] = { { "humerus_r", Vec3(-0.00599, -0.12646, 0.00428) },{ "humerus_r", Vec3(-0.02344, -0.14528, 0.00928) },{ "humerus_r", Vec3(-0.03184, -0.22637, -0.01217) },{ "humerus_r", Vec3(-0.01743, -0.26757, -0.01208) },{ "radius_r", Vec3(-0.0219, 0.01046, -0.00078) } };
+	muscles["TriMed"] = { { "humerus_r", Vec3(-0.00838, -0.13695, -0.00906) },{ "humerus_r", Vec3(-0.02601, -0.15139, -0.0108) },{ "humerus_r", Vec3(-0.03184, -0.22637, -0.01217) },{ "humerus_r", Vec3(-0.01743, -0.26757, -0.01208) },{ "radius_r", Vec3(-0.0219, 0.01046, -0.00078) } };
+	muscles["BicLong"] = { {"torso", Vec3(-0.039235, 0.00347, 0.14795)}, {"torso", Vec3(-0.028945, 0.01391, 0.15639)}, {"humerus_r", Vec3(0.02131, 0.01793, 0.01028)}, {"humerus_r", Vec3(0.02378, - 0.00511, 0.01201)},{ "humerus_r", Vec3(0.01345, - 0.02827, 0.00136) },{ "humerus_r", Vec3(0.01068, - 0.07736, - 0.00165) },{ "humerus_r", Vec3(0.01703, - 0.12125, 0.00024) },{ "humerus_r", Vec3(0.0228, - 0.1754, - 0.0063) }, {"radius_r", Vec3(0.00751, - 0.04839, 0.02179)} };
+	muscles["BicShort"] = { { "humerus_r", Vec3(-0.00838, -0.13695, -0.00906) },{ "humerus_r", Vec3(-0.02601, -0.15139, -0.0108) },{ "humerus_r", Vec3(-0.03184, -0.22637, -0.01217) },{ "humerus_r", Vec3(-0.01743, -0.26757, -0.01208) },{ "radius_r", Vec3(-0.0219, 0.01046, -0.00078) } };
+}
+
 int main()
 {
-	cout << "What" << endl;
 	//Creation of the model which will be composed of all the elements
 	Model osimModel;
-	//Model osimCreated ("FullBodyModel_Hamner2010_v2_0.osim");
 	osimModel.setName("bodyModel");
 	//Allow real time visualization of the model
 	//osimModel.setUseVisualizer(true);
 
 	// Get a reference to the model's ground body
 	OpenSim::Body& ground = osimModel.getGroundBody();
-	cout << "what" << endl;
+	
 	//Map associating body part name and the bones that are in this body part
 	std::map< string, vector<string> > bodyNames;
 
@@ -137,11 +145,11 @@ int main()
 
 	//Creates the bodyNames map and the suffix map
 	createBodyNamesMap(bodyNames, suffix);
-	cout << "whatt" << endl;
+	
 	//Properties of the body part (can be skiped)
 	std::map< string, vector<double> > bodyProp;
 	createBodyPropMap(bodyProp);
-	cout << "whhat" << endl;
+	
 	Vec3 center(0);
 	std::string name, suf;
 	Inertia inertia;
@@ -177,7 +185,7 @@ int main()
 	//Create a new pin joint between the ground and the pelvis
 	Vec3 locationInParent(0), orientationInParent(0), locationInBody(0), orientationInBody(0);
 	PinJoint *ground_pelvis = new PinJoint("ground_pelvis", ground, locationInParent, orientationInParent, *bodies["pelvis"], locationInBody, orientationInBody);
-	cout << "hello" << endl;
+	
 	//Contains all the joints accessible by their joints names
 	std::map< string, OpenSim::FreeJoint* > joints;
 	double positionRange[2] = { -0.01, 0.01 };
@@ -203,13 +211,7 @@ int main()
 		jointCoordinateSetH[4].setRange(positionRange);
 		jointCoordinateSetH[5].setRange(positionRange);
 	}
-
-	// Add every body to the model
-	/*for (std::map< string, OpenSim::Body* >::const_iterator it = bodies.begin(); it != bodies.end(); ++it) {
-	OpenSim::Body *b(it->second);
-	osimModel.addBody(b);
-	}*/
-	cout << "hello1" << endl;
+	
 	// Add every body to the model
 	std::map< string, OpenSim::Body* > bodies_copy(bodies);
 	int loop = 0, number = 0;
@@ -252,7 +254,57 @@ int main()
 			}
 		}
 	}
-	cout << "hello2" << endl;
+
+	/*//Add muscles to the body
+	// Create new muscle 1 using the Shutte 1993 muscle model
+	double maxIsometricForce = 1000.0, optimalFiberLength = 0.1, tendonSlackLength = 0.2, pennationAngle = 0.0, activation = 0.0001, deactivation = 1.0;
+	OpenSim::Thelen2003Muscle *muscle = new Thelen2003Muscle("TriLong", maxIsometricForce, optimalFiberLength, tendonSlackLength, pennationAngle);
+	muscle->setActivationTimeConstant(activation);
+	muscle->setDeactivationTimeConstant(deactivation);
+
+	// Specify the paths for the muscle
+	muscle->addNewPathPoint("TriLong-P1", *bodies["torso"], Vec3(-0.01, 0.36, 0.14723));
+	muscle->addNewPathPoint("TriLong-P2", *bodies["humerus_r"], Vec3(-0.02714, - 0.11441, - 0.00664));
+	muscle->addNewPathPoint("TriLong-P3", *bodies["humerus_r"], Vec3(-0.03184, -0.22637, -0.01217));
+	muscle->addNewPathPoint("TriLong-P4", *bodies["humerus_r"], Vec3(-0.01743, - 0.26757, - 0.01208));
+	muscle->addNewPathPoint("TriLong-P5", *bodies["radius_r"], Vec3(-0.0219, 0.01046, - 0.00078));
+
+	// Add the two muscles (as forces) to the model
+	osimModel.addForce(muscle);*/
+
+	//Add muscles to the body
+	std::map< string, vector<pair<string, Vec3> >> muscleNames;
+	createMuscleMap(muscleNames);
+	double maxIsometricForce = 1000.0, optimalFiberLength = 0.1, tendonSlackLength = 0.2, pennationAngle = 0.0, activation = 0.0001, deactivation = 1.0;
+	
+	//Contains all the muscles accessible by their names
+	std::map< string, OpenSim::Thelen2003Muscle > muscles;
+	for (std::map< string, vector<pair<string, Vec3> >>::const_iterator it = muscleNames.begin(); it != muscleNames.end(); ++it) {
+		// Create new muscle 1 using the Shutte 1993 muscle model
+		OpenSim::Thelen2003Muscle *muscle = new Thelen2003Muscle(it->first, maxIsometricForce, optimalFiberLength, tendonSlackLength, pennationAngle);
+		
+		muscle->setActivationTimeConstant(activation);
+		muscle->setDeactivationTimeConstant(deactivation);
+
+		// Specify the paths for the muscle
+		vector<pair<string, Vec3>> pathPoint = it->second;
+		string name;
+		
+		for (int i = 0; i < pathPoint.size(); i++) {
+			name = it->first + to_string(i + 1);
+			cout << name << " " << pathPoint[i].first << endl;
+			muscle->addNewPathPoint(name, *bodies[pathPoint[i].first], pathPoint[i].second);
+		}
+		muscles[it->first] = *muscle;
+
+		// Add the two muscles (as forces) to the model
+		osimModel.addForce(muscle);
+		cout << "hello3" << endl;
+	}
+	/*for (std::map< string, OpenSim::Thelen2003Muscle >::const_iterator it = muscles.begin(); it != muscles.end(); ++it) {
+		osimModel.addForce(it->second);
+	}*/
+	
 	// Define the acceleration of gravity
 	osimModel.setGravity(Vec3(0, -9.80665, 0));
 
