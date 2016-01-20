@@ -117,13 +117,46 @@ void createJointPropMap(std::map< string, Vec3 > &jointProp) {
 	jointProp["radius_hand_l"] = Vec3(-0.008797, -0.235841, -0.01361);
 }
 
+//Map associating muscles and their pathpoints
 void createMuscleMap(std::map< string, vector<pair<string, Vec3> >> &muscles) {
-	//Arms
-	muscles["TriLong"] = { { "torso", Vec3(-0.01, 0.36, 0.14723) },{ "humerus_r", Vec3(-0.02714, -0.11441, -0.00664) },{ "humerus_r", Vec3(-0.03184, -0.22637, -0.01217) },{ "humerus_r", Vec3(-0.01743, -0.26757, -0.01208) },{ "radius_r", Vec3(-0.0219, 0.01046, -0.00078) } };
-	muscles["TriLat"] = { { "humerus_r", Vec3(-0.00599, -0.12646, 0.00428) },{ "humerus_r", Vec3(-0.02344, -0.14528, 0.00928) },{ "humerus_r", Vec3(-0.03184, -0.22637, -0.01217) },{ "humerus_r", Vec3(-0.01743, -0.26757, -0.01208) },{ "radius_r", Vec3(-0.0219, 0.01046, -0.00078) } };
-	muscles["TriMed"] = { { "humerus_r", Vec3(-0.00838, -0.13695, -0.00906) },{ "humerus_r", Vec3(-0.02601, -0.15139, -0.0108) },{ "humerus_r", Vec3(-0.03184, -0.22637, -0.01217) },{ "humerus_r", Vec3(-0.01743, -0.26757, -0.01208) },{ "radius_r", Vec3(-0.0219, 0.01046, -0.00078) } };
-	muscles["BicLong"] = { {"torso", Vec3(-0.039235, 0.00347, 0.14795)}, {"torso", Vec3(-0.028945, 0.01391, 0.15639)}, {"humerus_r", Vec3(0.02131, 0.01793, 0.01028)}, {"humerus_r", Vec3(0.02378, - 0.00511, 0.01201)},{ "humerus_r", Vec3(0.01345, - 0.02827, 0.00136) },{ "humerus_r", Vec3(0.01068, - 0.07736, - 0.00165) },{ "humerus_r", Vec3(0.01703, - 0.12125, 0.00024) },{ "humerus_r", Vec3(0.0228, - 0.1754, - 0.0063) }, {"radius_r", Vec3(0.00751, - 0.04839, 0.02179)} };
-	muscles["BicShort"] = { { "humerus_r", Vec3(-0.00838, -0.13695, -0.00906) },{ "humerus_r", Vec3(-0.02601, -0.15139, -0.0108) },{ "humerus_r", Vec3(-0.03184, -0.22637, -0.01217) },{ "humerus_r", Vec3(-0.01743, -0.26757, -0.01208) },{ "radius_r", Vec3(-0.0219, 0.01046, -0.00078) } };
+	//Right Upper Arm
+	muscles["TriLongR"] = { { "torso", Vec3(-0.01, 0.36, 0.14723) },{ "humerus_r", Vec3(-0.02714, -0.11441, -0.00664) },{ "humerus_r", Vec3(-0.03184, -0.22637, -0.01217) },{ "humerus_r", Vec3(-0.01743, -0.26757, -0.01208) },{ "radius_r", Vec3(-0.0219, 0.01046, -0.00078) } };
+	muscles["TriLatR"] = { { "humerus_r", Vec3(-0.00599, -0.12646, 0.00428) },{ "humerus_r", Vec3(-0.02344, -0.14528, 0.00928) },{ "humerus_r", Vec3(-0.03184, -0.22637, -0.01217) },{ "humerus_r", Vec3(-0.01743, -0.26757, -0.01208) },{ "radius_r", Vec3(-0.0219, 0.01046, -0.00078) } };
+	muscles["TriMedR"] = { { "humerus_r", Vec3(-0.00838, -0.13695, -0.00906) },{ "humerus_r", Vec3(-0.02601, -0.15139, -0.0108) },{ "humerus_r", Vec3(-0.03184, -0.22637, -0.01217) },{ "humerus_r", Vec3(-0.01743, -0.26757, -0.01208) },{ "radius_r", Vec3(-0.0219, 0.01046, -0.00078) } };
+	muscles["BicLongR"] = { {"torso", Vec3(-0.039235, 0.36, 0.14795)}, {"torso", Vec3(-0.028945, 0.36, 0.15639)}, {"humerus_r", Vec3(0.02131, 0.01793, 0.01028)}, {"humerus_r", Vec3(0.02378, - 0.00511, 0.01201)},{ "humerus_r", Vec3(0.02, - 0.02827, 0.00136) },{ "humerus_r", Vec3(0.02, - 0.07736, - 0.00165) },{ "humerus_r", Vec3(0.01703, - 0.12125, 0.00024) },{ "humerus_r", Vec3(0.0228, - 0.1754, - 0.0063) }, {"radius_r", Vec3(0.00751, 0.024, 0.0)} };
+	muscles["BicShortR"] = { { "torso", Vec3(0.004675, 0.36 , 0.15) },{ "torso", Vec3(-0.007075, 0.36, 0.15) },{ "humerus_r", Vec3(0.01117, -0.07576, -0.01101) },{ "humerus_r", Vec3(0.01703, -0.12125, -0.01079) },{ "humerus_r", Vec3(0.0228, -0.1754, -0.0063) },{ "radius_r", Vec3(0.00751, 0.024, 0.0) } };
+	muscles["BraR"] = { { "humerus_r", Vec3(0.009, - 0.1739, - 0.0036) },{ "radius_r", Vec3(0.023, - 0.0239, 0.001) } };
+
+	//Left Upper Arm
+	muscles["TriLongL"] = { { "torso", Vec3(-0.01, 0.36, -0.14723) },{ "humerus_l", Vec3(-0.02714, -0.11441, 0.00664) },{ "humerus_l", Vec3(-0.03184, -0.22637, 0.01217) },{ "humerus_l", Vec3(-0.01743, -0.26757, 0.01208) },{ "radius_l", Vec3(-0.0219, 0.01046, 0.00078) } };
+	muscles["TriLatL"] = { { "humerus_l", Vec3(-0.00599, -0.12646, -0.00428) },{ "humerus_l", Vec3(-0.02344, -0.14528, -0.00928) },{ "humerus_l", Vec3(-0.03184, -0.22637, 0.01217) },{ "humerus_l", Vec3(-0.01743, -0.26757, 0.01208) },{ "radius_l", Vec3(-0.0219, 0.01046, 0.00078) } };
+	muscles["TriMedL"] = { { "humerus_l", Vec3(-0.00838, -0.13695, 0.00906) },{ "humerus_l", Vec3(-0.02601, -0.15139, 0.0108) },{ "humerus_l", Vec3(-0.03184, -0.22637, 0.01217) },{ "humerus_l", Vec3(-0.01743, -0.26757, 0.01208) },{ "radius_l", Vec3(-0.0219, 0.01046, 0.00078) } };
+	muscles["BicLongL"] = { { "torso", Vec3(-0.039235, 0.36, -0.14795) },{ "torso", Vec3(-0.028945, 0.36, -0.15639) },{ "humerus_l", Vec3(0.02131, 0.01793, -0.01028) },{ "humerus_l", Vec3(0.02378, -0.00511, -0.01201) },{ "humerus_l", Vec3(0.02, -0.02827, -0.00136) },{ "humerus_l", Vec3(0.02, -0.07736, 0.00165) },{ "humerus_l", Vec3(0.01703, -0.12125, -0.00024) },{ "humerus_l", Vec3(0.0228, -0.1754, 0.0063) },{ "radius_l", Vec3(0.00751, 0.024, 0.0) } };
+	muscles["BicShortL"] = { { "torso", Vec3(0.004675, 0.36 , -0.15) },{ "torso", Vec3(-0.007075, 0.36, -0.15) },{ "humerus_l", Vec3(0.01117, -0.07576, 0.01101) },{ "humerus_l", Vec3(0.01703, -0.12125, 0.01079) },{ "humerus_l", Vec3(0.0228, -0.1754, 0.0063) },{ "radius_l", Vec3(0.00751, 0.024, 0.0) } };
+	muscles["BraL"] = { { "humerus_l", Vec3(0.009, -0.1739, 0.0036) },{ "radius_l", Vec3(0.023, -0.0239, -0.001) } };
+
+	//Right Lower Arm
+	muscles["EcrbR"] = { { "humerus_r", Vec3(0.02254, -0.26813, 0.00679) },{ "radius_r", Vec3(-0.00384, -0.1248, 0.00482) },{ "radius_r", Vec3(-0.01733, -0.22, 0.0004) } };
+	muscles["EcrlR"] = { { "humerus_r", Vec3(0.01337, - 0.26111, 0.00069) },{ "humerus_r", Vec3(0.02239, - 0.26834, 0.00679) },{ "radius_r", Vec3(-0.00136, - 0.12953, 0.00532) },{ "radius_r", Vec3(-0.0083, - 0.21052, 0.0052) } };
+	muscles["FcuR"] = { { "humerus_r", Vec3(0.00463, -0.27768, 0.01318) },{ "ulna_r", Vec3(-0.00465, -0.22771, 0.05589) },{ "ulna_r", Vec3(-0.01368, -0.22899, 0.05805) } };
+	muscles["FcrR"] = { { "humerus_r", Vec3(0.00639, - 0.27761, 0.01313) },{ "radius_r", Vec3(0.00953, - 0.21667, 0.035) } };
+
+	//Left Lower Arm
+	muscles["EcrbL"] = { { "humerus_l", Vec3(0.02254, -0.26813, -0.00679) },{ "radius_l", Vec3(-0.00384, -0.1248, -0.00482) },{ "radius_l", Vec3(-0.01733, -0.22, -0.0004) } };
+	muscles["EcrlL"] = { { "humerus_l", Vec3(0.01337, -0.26111, -0.00069) },{ "humerus_l", Vec3(0.02239, -0.26834, -0.00679) },{ "radius_l", Vec3(-0.00136, -0.12953, -0.00532) },{ "radius_l", Vec3(-0.0083, -0.21052, -0.0052) } };
+	muscles["FcuL"] = { { "humerus_l", Vec3(0.00463, -0.27768, -0.01318) },{ "ulna_l", Vec3(-0.00465, -0.22771, -0.05589) },{ "ulna_l", Vec3(-0.01368, -0.22899, -0.05805) } };
+	muscles["FcrL"] = { { "humerus_l", Vec3(0.00639, -0.27761, -0.01313) },{ "radius_l", Vec3(0.00953, -0.21667, -0.035) } };
+
+	//Right Torso
+	muscles["ErcSpnR"] = { { "pelvis", Vec3(-0.14000000, 0.04390000, 0.04360000) },{ "torso", Vec3(-0.05500000, 0.11000000, 0.02410000) } };
+	muscles["IntOblR"] = { { "pelvis", Vec3(-0.14000000, 0.07000000, 0.11570000) },{ "torso", Vec3(0.07000000, 0.16000000, 0.01500000) } };
+	muscles["ExtOblR"] = { { "pelvis", Vec3(-0.03000000, - 0.06360000, 0.01000000) },{ "torso", Vec3(0.06500000, 0.11000000, 0.11000000) } };
+
+	//Left Torso
+	muscles["ErcSpnL"] = { { "pelvis", Vec3(-0.14000000, 0.04390000, -0.04360000) },{ "torso", Vec3(-0.05500000, 0.11000000, -0.02410000) } };
+	muscles["IntOblL"] = { { "pelvis", Vec3(-0.14000000, 0.07000000, -0.11570000) },{ "torso", Vec3(0.07000000, 0.16000000, -0.01500000) } };
+	muscles["ExtOblL"] = { { "pelvis", Vec3(-0.03000000, -0.06360000, -0.01000000) },{ "torso", Vec3(0.06500000, 0.11000000, -0.11000000) } };
+
 }
 
 int main()
@@ -255,23 +288,6 @@ int main()
 		}
 	}
 
-	/*//Add muscles to the body
-	// Create new muscle 1 using the Shutte 1993 muscle model
-	double maxIsometricForce = 1000.0, optimalFiberLength = 0.1, tendonSlackLength = 0.2, pennationAngle = 0.0, activation = 0.0001, deactivation = 1.0;
-	OpenSim::Thelen2003Muscle *muscle = new Thelen2003Muscle("TriLong", maxIsometricForce, optimalFiberLength, tendonSlackLength, pennationAngle);
-	muscle->setActivationTimeConstant(activation);
-	muscle->setDeactivationTimeConstant(deactivation);
-
-	// Specify the paths for the muscle
-	muscle->addNewPathPoint("TriLong-P1", *bodies["torso"], Vec3(-0.01, 0.36, 0.14723));
-	muscle->addNewPathPoint("TriLong-P2", *bodies["humerus_r"], Vec3(-0.02714, - 0.11441, - 0.00664));
-	muscle->addNewPathPoint("TriLong-P3", *bodies["humerus_r"], Vec3(-0.03184, -0.22637, -0.01217));
-	muscle->addNewPathPoint("TriLong-P4", *bodies["humerus_r"], Vec3(-0.01743, - 0.26757, - 0.01208));
-	muscle->addNewPathPoint("TriLong-P5", *bodies["radius_r"], Vec3(-0.0219, 0.01046, - 0.00078));
-
-	// Add the two muscles (as forces) to the model
-	osimModel.addForce(muscle);*/
-
 	//Add muscles to the body
 	std::map< string, vector<pair<string, Vec3> >> muscleNames;
 	createMuscleMap(muscleNames);
@@ -279,8 +295,9 @@ int main()
 	
 	//Contains all the muscles accessible by their names
 	std::map< string, OpenSim::Thelen2003Muscle > muscles;
+	//Creates and add the muscles to the model
 	for (std::map< string, vector<pair<string, Vec3> >>::const_iterator it = muscleNames.begin(); it != muscleNames.end(); ++it) {
-		// Create new muscle 1 using the Shutte 1993 muscle model
+		// Create a new muscle using the Shutte 1993 muscle model
 		OpenSim::Thelen2003Muscle *muscle = new Thelen2003Muscle(it->first, maxIsometricForce, optimalFiberLength, tendonSlackLength, pennationAngle);
 		
 		muscle->setActivationTimeConstant(activation);
@@ -290,21 +307,21 @@ int main()
 		vector<pair<string, Vec3>> pathPoint = it->second;
 		string name;
 		
+		//Create the path of the muscle
 		for (int i = 0; i < pathPoint.size(); i++) {
 			name = it->first + to_string(i + 1);
-			cout << name << " " << pathPoint[i].first << endl;
 			muscle->addNewPathPoint(name, *bodies[pathPoint[i].first], pathPoint[i].second);
 		}
 		muscles[it->first] = *muscle;
 
 		// Add the two muscles (as forces) to the model
 		osimModel.addForce(muscle);
-		cout << "hello3" << endl;
 	}
-	/*for (std::map< string, OpenSim::Thelen2003Muscle >::const_iterator it = muscles.begin(); it != muscles.end(); ++it) {
-		osimModel.addForce(it->second);
-	}*/
 	
+	//Create the markers
+	OpenSim::Mark *M = new OpenSim::Marker();
+	M->
+
 	// Define the acceleration of gravity
 	osimModel.setGravity(Vec3(0, -9.80665, 0));
 

@@ -126,6 +126,23 @@ int main()
 	osimModel.addBody(lowerArm);
 	osimModel.addBody(stlPart);
 
+	/*//Add muscles to the body
+	// Create new muscle 1 using the Shutte 1993 muscle model
+	double maxIsometricForce = 1000.0, optimalFiberLength = 0.1, tendonSlackLength = 0.2, pennationAngle = 0.0, activation = 0.0001, deactivation = 1.0;
+	OpenSim::Thelen2003Muscle *muscle = new Thelen2003Muscle("TriLong", maxIsometricForce, optimalFiberLength, tendonSlackLength, pennationAngle);
+	muscle->setActivationTimeConstant(activation);
+	muscle->setDeactivationTimeConstant(deactivation);
+
+	// Specify the paths for the muscle
+	muscle->addNewPathPoint("TriLong-P1", *bodies["ground"], Vec3(-0.01, 0.36, 0.14723));
+	muscle->addNewPathPoint("TriLong-P2", *bodies["upperArm"], Vec3(-0.02714, - 0.11441, - 0.00664));
+	muscle->addNewPathPoint("TriLong-P3", *bodies["upperArm"], Vec3(-0.03184, -0.22637, -0.01217));
+	muscle->addNewPathPoint("TriLong-P4", *bodies["upperArm"], Vec3(-0.01743, - 0.26757, - 0.01208));
+	muscle->addNewPathPoint("TriLong-P5", *bodies["lowerArm"], Vec3(-0.0219, 0.01046, - 0.00078));
+
+	// Add the two muscles (as forces) to the model
+	osimModel.addForce(muscle);*/
+
 	// Define the acceleration of gravity
 	osimModel.setGravity(Vec3(0, -9.80665, 0));
 
