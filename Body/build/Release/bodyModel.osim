@@ -4587,7 +4587,16 @@
 		</ForceSet>
 		<!--Markers in the model.-->
 		<MarkerSet>
-			<objects />
+			<objects>
+				<Marker name="M1">
+					<!--Body segment in the model on which the marker resides.-->
+					<body>torso</body>
+					<!--Location of a marker on the body segment.-->
+					<location> 0.1 0.1 0.1</location>
+					<!--Flag (true or false) specifying whether or not a marker should be kept fixed in the marker placement step.  i.e. If false, the marker is allowed to move.-->
+					<fixed>false</fixed>
+				</Marker>
+			</objects>
 			<groups />
 		</MarkerSet>
 		<!--ContactGeometries  in the model.-->

@@ -319,8 +319,10 @@ int main()
 	}
 	
 	//Create the markers
-	OpenSim::Mark *M = new OpenSim::Marker();
-	M->
+	OpenSim::MarkerSet markerSet = osimModel.getMarkerSet();
+	double canard[3] = { 0.1, 0.1, 0.1 };
+	markerSet.addMarker("M1", canard, *bodies["torso"]);
+	osimModel.updateMarkerSet(markerSet);
 
 	// Define the acceleration of gravity
 	osimModel.setGravity(Vec3(0, -9.80665, 0));
