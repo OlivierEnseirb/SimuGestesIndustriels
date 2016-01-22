@@ -1,0 +1,28 @@
+﻿Build started 21/01/2016 12:40:09.
+     1>Project "C:\Users\Olivier\Desktop\ExampleMain\build\ZERO_CHECK.vcxproj" on node 2 (Build target(s)).
+     1>CustomBuild:
+         Checking Build System
+         CMake is re-running because C:/Users/Olivier/Desktop/ExampleMain/build/CMakeFiles/generate.stamp is out-of-date.
+           the file 'C:/Program Files (x86)/CMake/share/cmake-3.4/Modules/CMakeSystemSpecificInitialize.cmake'
+           is newer than 'C:/Users/Olivier/Desktop/ExampleMain/build/CMakeFiles/generate.stamp.depend'
+           result='0'
+         -- The C compiler identification is MSVC 19.0.23026.0
+         -- The CXX compiler identification is MSVC 19.0.23026.0
+         -- Check for working C compiler using: Visual Studio 14 2015 Win64
+         -- Check for working C compiler using: Visual Studio 14 2015 Win64 -- works
+         -- Detecting C compiler ABI info
+         -- Detecting C compiler ABI info - done
+         -- Check for working CXX compiler using: Visual Studio 14 2015 Win64
+         -- Check for working CXX compiler using: Visual Studio 14 2015 Win64 -- works
+         -- Detecting CXX compiler ABI info
+         -- Detecting CXX compiler ABI info - done
+         -- Detecting CXX compile features
+         -- Detecting CXX compile features - done
+         -- Configuring done
+         -- Generating done
+         -- Build files have been written to: C:/Users/Olivier/Desktop/ExampleMain/build
+     1>Done Building Project "C:\Users\Olivier\Desktop\ExampleMain\build\ZERO_CHECK.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:21.79
