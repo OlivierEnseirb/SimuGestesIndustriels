@@ -15,7 +15,7 @@
 using namespace std;
 
 #define BUFF_SIZE           16
-#define NEW_SAMPLE_CLUE     '\n'
+#define END_SAMPLE_CLUE     '\n' // caractere of the end 
 #define SEPARATING_CLUE     ','
 
 class Multiple_Sensor_Reading; // class declared somewhere else and included in .cpp
@@ -24,43 +24,44 @@ class ReadSerialCom
 {
     public:
         ReadSerialCom(){}
-        ReadSerialCom(int _num_thread, int _num_port); //num_port is the portof the computer where is the arduino
+        ReadSerialCom(size_t _num_thread, size_t _num_port); //num_port is the port of the computer where is the arduino ; num_thread is the id of the communication in the program
         ~ReadSerialCom();
 
-        void initSerialCommunication(int _num_com, int _num_port);
-        bool openSerialCommunication(double waiting_time);
-        void closeSerialCommunication();
-        bool readSerialCommunication();
-		bool launchSerialCommunication(Multiple_Sensor_Reading* msr, double waiting_time);
+        void initSerialCommunication(size_t _num_com, size_t _num_port); //initialize the communication from the init file and its arguments
+        bool openSerialCommunication(DATA_TYPE waiting_time); // open the serial communication, and try it for waiting_time seconds
+        void closeSerialCommunication(); // close the serial port
+        bool readSerialCommunication(); // read the serial port and wait for data
+		bool launchSerialCommunication(Multiple_Sensor_Reading* msr, DATA_TYPE waiting_time); // main function reading and processing data from serial com
+				//return false when communication is lost else true at the end of the function
 
-        void appendNewDataToBuffer();
-        bool waitNewDataClue(size_t& pos);
-        void setNewSample(string& newSampleString);
-        void convertStringToSample(string& newSampleString, Sample& _sample);
-		bool checkGoodCommunication(double limit_time);
+        void appendNewDataToBuffer(); // adds "serial_buffer" to "big_buffer"
+        bool waitEndDataClue(size_t& pos); // indicates if END_SAMPLE_CLUE caracter has been received and give the position in "big_buffer"
+        void setNewSample(string& newSampleString); //set new_sample with the data given as a string
+        void convertStringToSample(string& newSampleString, Sample& _sample); // convert data as string size_to a "Sample" object
+		bool checkGoodCommunication(DATA_TYPE limit_time); // watch the time between two communications if it is not too long
 
         Sample new_sample = defaultSample;
         Sample previous_sample = defaultSample;
 
-		int getNumThread() { return num_thread; }
-		void setNumThread(int _nt) { num_thread = _nt; }
-		int getNumPort() { return set_data->getComNumber(); }
+		size_t getNumThread() { return num_thread; }
+		void setNumThread(size_t _nt) { num_thread = _nt; }
+		size_t getNumPort() { return (size_t)set_data->getComNumber(); }
 
-		bool keep_processing = true;
+		bool keep_processing = true; // indicates if the serial port has to be reading anymore
 
     private:
 		Settings* set_data = new Settings();
 		UART_gestion* serial_com = new UART_gestion();
 
 
-        char buffer[BUFF_SIZE];//Déclaration d'un buffer qui reçoit les données
-        string big_buffer;
+        char serial_buffer[BUFF_SIZE]; // buffer that gets data directly from the serial port
+        string big_buffer; //buffer where are stocked new data from serial port, via "serial_buffer"
 
-        int nb_bytes_read;
-        bool isSynchronised = false;
+        int nb_bytes_read; // nbr of bytes read by the serial port
+        bool isSynchronised = false; // indicates if the communication is synchronised on the communication protocol
 
-		int num_thread = 0;
-		time_t last_time_data_obtained;
+		size_t num_thread = 0; // number of the thread given to identify itself when returning new samples
+		time_t last_time_data_obtained; // indicates when the last data has been obtained
 };
 
 #endif // READSERIALCOM_H

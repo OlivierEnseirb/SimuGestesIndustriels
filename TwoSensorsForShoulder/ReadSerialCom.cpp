@@ -1,7 +1,7 @@
 #include "ReadSerialCom.h"
 #include "Multiple_sensor_reading.h"
 
-ReadSerialCom::ReadSerialCom(int _num_com, int _num_port)
+ReadSerialCom::ReadSerialCom(size_t _num_com, size_t _num_port)
 {
     initSerialCommunication(_num_com, _num_port);
 }
@@ -12,8 +12,8 @@ ReadSerialCom::~ReadSerialCom()
     closeSerialCommunication();
 }
 
-bool ReadSerialCom::launchSerialCommunication(Multiple_Sensor_Reading* msr, double waiting_time)
-{ //return false when communication is lost else true at the end of the function
+bool ReadSerialCom::launchSerialCommunication(Multiple_Sensor_Reading* msr, DATA_TYPE waiting_time)
+{ 
 	if (openSerialCommunication(waiting_time))
 	{
 		size_t pos = 0;
@@ -29,7 +29,7 @@ bool ReadSerialCom::launchSerialCommunication(Multiple_Sensor_Reading* msr, doub
 			}
 
 			appendNewDataToBuffer();
-			if (waitNewDataClue(pos))
+			if (waitEndDataClue(pos))
 			{
 				string sub_str = big_buffer.substr(0, pos + 1);
 				big_buffer.erase(0, pos + 1);
@@ -49,19 +49,19 @@ bool ReadSerialCom::launchSerialCommunication(Multiple_Sensor_Reading* msr, doub
 	return true;
 }
 
-void ReadSerialCom::initSerialCommunication(int _num_thread, int _num_port)
+void ReadSerialCom::initSerialCommunication(size_t _num_thread, size_t _num_port)
 {
 	setNumThread(_num_thread);
 
     //lecture du fichier de config et récupération des données
     set_data->getSettings("init.txt");
-	set_data->setComNumber(_num_port);
+	set_data->setComNumber((int)_num_port);
 
     //configuration de la strucutre concernant la com série en fonction des données du fichier de config
     serial_com->SetDcbStructure(set_data->getBaud(), set_data->getNbBits(), set_data->getBitsStop(), set_data->getParity());
 }
 
-bool ReadSerialCom::openSerialCommunication(double waiting_time)
+bool ReadSerialCom::openSerialCommunication(DATA_TYPE waiting_time)
 {
     //ouverture du port com en fonction du numéro donné dans le fichier de config
     cout << "tentative d'ouverture du COM" << set_data->getComNumber() << endl;
@@ -106,7 +106,7 @@ void ReadSerialCom::closeSerialCommunication()
 
 bool ReadSerialCom::readSerialCommunication()
 {
-    return serial_com->ReadCOM(buffer, BUFF_SIZE, &nb_bytes_read);
+    return serial_com->ReadCOM(serial_buffer, BUFF_SIZE, &nb_bytes_read);
 }
 
 void ReadSerialCom::setNewSample(string& newSampleString)
@@ -160,17 +160,17 @@ void ReadSerialCom::appendNewDataToBuffer()
 {
     for(int i = 0; i<nb_bytes_read; i++)
     {
-        big_buffer += buffer[i];
+        big_buffer += serial_buffer[i];
     }
 }
 
-bool ReadSerialCom::waitNewDataClue(size_t& pos)
+bool ReadSerialCom::waitEndDataClue(size_t& pos)
 {
-    pos = big_buffer.find_first_of(NEW_SAMPLE_CLUE);
+    pos = big_buffer.find_first_of(END_SAMPLE_CLUE);
     return pos != big_buffer.npos;
 }
 
-bool ReadSerialCom::checkGoodCommunication(double limit_time)
+bool ReadSerialCom::checkGoodCommunication(DATA_TYPE limit_time)
 {
 	time_t current_time;
 	time(&current_time);

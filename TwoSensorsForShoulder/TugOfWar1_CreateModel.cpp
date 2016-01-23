@@ -5,7 +5,8 @@
 
 
 using namespace std;
-
+//using namespace OpenSim; // ne pas ajouter ces namespaces car sinon il y a conflit entre des classes du même (Vec3 et Vec4) alors créé par moi et semblant exister dans OpenSim.
+//using namespace SimTK;
 
 void updateVisualizer(Multiple_Sensor_Reading& msr, OpenSim::Model& osimModel, SimTK::State& currentState)
 {
@@ -27,27 +28,33 @@ void updateVisualizer(Multiple_Sensor_Reading& msr, OpenSim::Model& osimModel, S
 	}
 }
 
-void updateVisualizer2(Multiple_Sensor_Reading& msr, OpenSim::Model& osimModel, SimTK::State& currentState)
+void updateVisualizer_shoulder(Multiple_Sensor_Reading& msr, OpenSim::Model& osimModel, SimTK::State& currentState)
 {
-	DATA_TYPE M_identity[MAT_SIZE][MAT_SIZE] = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
-	DATA_TYPE M_capteurDos_Terre[MAT_SIZE][MAT_SIZE] = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
-	DATA_TYPE M_capteurBras_Terre[MAT_SIZE][MAT_SIZE] = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
-	DATA_TYPE M_isbBras_capteurBras[MAT_SIZE][MAT_SIZE] = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
-	DATA_TYPE M_isbDos_capteurDos[MAT_SIZE][MAT_SIZE] = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
-	DATA_TYPE M_isbBras_isbDos[MAT_SIZE][MAT_SIZE] = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
-	DATA_TYPE M_temp0[MAT_SIZE][MAT_SIZE];
-	DATA_TYPE M_temp1[MAT_SIZE][MAT_SIZE];
-	DATA_TYPE M_temp2[MAT_SIZE][MAT_SIZE];
+	// matrix for the inverse kinematic
+	/* TO DO
+	 * make a real function that make the inverse kinematic
+	 */
+	RotMat M_identity = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
+	RotMat M_capteurDos_Terre = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
+	RotMat M_capteurBras_Terre = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
+	RotMat M_isbBras_capteurBras = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
+	RotMat M_isbDos_capteurDos = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
+	RotMat M_isbBras_isbDos = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
+	RotMat M_temp0;
+	RotMat M_temp1;
+
+	size_t num_thread_shoulder, num_thread_back; // get the position of the sensors in the threads
+	msr.findThreadByName(string("shoulder"), num_thread_shoulder);
+	msr.findThreadByName(string("back"), num_thread_back);
 
 	while (true)
 	{
-		if (_kbhit())
+		if (_kbhit()) // take a look at the keyboard buffer and say if a key was entered or not
 			break;
-		if (msr.sens_samples[NUM_THREAD_SHOULDER].size()>0 && msr.sens_samples[NUM_THREAD_BACK].size()>0)
+		if (msr.sens_samples[num_thread_shoulder].size()>0 && msr.sens_samples[num_thread_back].size()>0)
 		{
-			msr.QuaternionToOrthogonalMatrix(msr.sens_samples[NUM_THREAD_SHOULDER][0].quaternion, M_capteurBras_Terre);
-			msr.QuaternionToOrthogonalMatrix(msr.sens_samples[NUM_THREAD_BACK][0].quaternion, M_capteurDos_Terre);
-
+			msr.QuaternionToOrthogonalMatrix(msr.sens_samples[num_thread_shoulder][0].quaternion, M_capteurBras_Terre);
+			msr.QuaternionToOrthogonalMatrix(msr.sens_samples[num_thread_back][0].quaternion, M_capteurDos_Terre);
 
 			msr.mulMatrix(M_isbBras_capteurBras, M_capteurBras_Terre, M_temp0);
 
@@ -59,55 +66,31 @@ void updateVisualizer2(Multiple_Sensor_Reading& msr, OpenSim::Model& osimModel, 
 
 			msr.mulMatrix(M_temp1, M_temp0, M_isbBras_isbDos);
 
-			Vec4 q = Vec4();
-			Vec3 e = Vec3();
+			Vec4 q;
+			Vec3 e;
 			msr.OrthogonalMatrixToQuaternion(M_isbBras_isbDos, q);
 			msr.QuaternionToEuler(q, e);
 
 			osimModel.setStateVariable(currentState, "r_shoulder_xRotation", e.x);
 			osimModel.setStateVariable(currentState, "r_shoulder_yRotation", e.y);
 			osimModel.setStateVariable(currentState, "r_shoulder_zRotation", e.z);
+			//printf("(%3f, %3f, %3f)\n", e.x*180/ MATHS_PI, e.y * 180 / MATHS_PI, e.z * 180 / MATHS_PI);
 			
-			msr.sens_samples[NUM_THREAD_SHOULDER].erase(msr.sens_samples[NUM_THREAD_SHOULDER].begin());
-			msr.sens_samples[NUM_THREAD_BACK].erase(msr.sens_samples[NUM_THREAD_BACK].begin());
+			msr.sens_samples[num_thread_shoulder].erase(msr.sens_samples[num_thread_shoulder].begin());
+			msr.sens_samples[num_thread_back].erase(msr.sens_samples[num_thread_back].begin());
+			osimModel.getVisualizer().show(currentState);
 		}
-		osimModel.getVisualizer().show(currentState);
 	}
 }
 
 int main()
-{/*
-	Multiple_Sensor_Reading msr = Multiple_Sensor_Reading(); // launch communication with sensors in parallel threads
-
-	DATA_TYPE M_identity[MAT_SIZE][MAT_SIZE] = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
-	DATA_TYPE M_capteurDos_Terre[MAT_SIZE][MAT_SIZE] = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
-	DATA_TYPE M_capteurBras_Terre[MAT_SIZE][MAT_SIZE] = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
-	DATA_TYPE M_isbBras_capteurBras[MAT_SIZE][MAT_SIZE] = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
-	DATA_TYPE M_isbDos_capteurDos[MAT_SIZE][MAT_SIZE] = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
-	DATA_TYPE M_isbBras_isbDos[MAT_SIZE][MAT_SIZE] = { { 1,0,0 },{ 0,1,0 },{ 0,0,1 } };
-
-	msr.displayMatrix(M_identity);
-	msr.addMatrix(M_capteurBras_Terre, M_isbDos_capteurDos, M_isbBras_capteurBras);
-	msr.mulMatrix(M_isbBras_capteurBras, M_isbBras_capteurBras, M_isbDos_capteurDos);
-	msr.mulMatrix(M_isbDos_capteurDos, 3, M_capteurBras_Terre);
-
-	msr.displayMatrix(M_capteurBras_Terre);
-	msr.displayMatrix(M_isbDos_capteurDos);
-	msr.displayMatrix(M_isbBras_capteurBras);
-
-
-	cin.get();
-	return 1;
-}*/
-
+{
 	cout<<"Enter the file name of the OpenSim Model to display : ";
 	string model_file_name;
 	cin >> model_file_name;
 	
 	try {
-		
 		OpenSim::Model my_osimModel(model_file_name); //load the opensim model
-		//Model my_osimModel("C:\\Users\\Olivier\\Desktop\\ExampleMain\\build\\Release\\bodyModel.osim");
 		my_osimModel.setUseVisualizer(true);	// enable the visualizer
 
 		SimTK::State currentState = my_osimModel.initSystem(); // initialize the model and get the default state of the model
@@ -117,24 +100,26 @@ int main()
 		
 		unsigned char data_to_write = ENABLE_EULER; // data to write into the file : EULER, ACCELERATION, VELOCITY... cf Sample.h
 		unsigned char data_to_display = ENABLE_NOTHING; // data to display each time a sample is got
-		double waiting_time = 10; //seconds
+		DATA_TYPE waiting_time = 10; //seconds
 		Multiple_Sensor_Reading msr(data_file, CSV, data_to_write, data_to_display, waiting_time); // launch communication with sensors in parallel threads
 
 		printf("Reading.....\n");
 		printf("Enter any key then tap enter to stop the program.\n");
 
-		updateVisualizer2(msr, my_osimModel, currentState); // loop that update the visualizer
+		updateVisualizer_shoulder(msr, my_osimModel, currentState); // loop that update the visualizer
 
 		msr.stopReading(); //stop communications
 
 		fclose(data_file); // close the file
-		
 	}
 	catch (OpenSim::Exception e)
 	{
 		cout << e.getMessage() << endl;
 	}
 
-	cin.get(); // wait enter to kill program
+	while (!_kbhit()) // take a look at the keyboard buffer and say if a key was entered or not
+	{
+
+	}// wait enter to kill program
 	return EXIT_SUCCESS;
 }

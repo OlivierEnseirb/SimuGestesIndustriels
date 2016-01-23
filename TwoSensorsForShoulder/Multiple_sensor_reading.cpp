@@ -2,7 +2,7 @@
 #include "ReadSerialCom.h"
 std::mutex mtx;
 
-void launchSerialCom(Multiple_Sensor_Reading* msr, ReadSerialCom* rsc, double waiting_time)
+void launchSerialCom(Multiple_Sensor_Reading* msr, ReadSerialCom* rsc, DATA_TYPE waiting_time)
 {
 	while (!(rsc->launchSerialCommunication(msr, waiting_time)))
 	{
@@ -12,7 +12,7 @@ void launchSerialCom(Multiple_Sensor_Reading* msr, ReadSerialCom* rsc, double wa
 	rsc->closeSerialCommunication();
 }
 
-Multiple_Sensor_Reading::Multiple_Sensor_Reading(FILE* _data_file, DATA_FORMAT _df, unsigned char data_to_write, unsigned char data_to_display, double waiting_time)
+Multiple_Sensor_Reading::Multiple_Sensor_Reading(FILE* _data_file, DATA_FORMAT _df, unsigned char data_to_write, unsigned char data_to_display, DATA_TYPE waiting_time)
 {
 	setAssocietedFilePointer(_data_file);
 	setDataFormat(_df);
@@ -21,38 +21,37 @@ Multiple_Sensor_Reading::Multiple_Sensor_Reading(FILE* _data_file, DATA_FORMAT _
 
 	// init com serie
 	size_t nbr_sensors = 2;
-	vector<string> temp;
-	
+	vector<string> temp_link_joint;
+	size_t port_number;
+	string com_name;
+
+	/* TO DO
+	 * a modifier en qqch prenant un fichier d'init pour relier un capteur à un marqueur/articulation et un port
+	 */
 	//for (size_t num_thread = 0; num_thread < nbr_sensors; num_thread++) {
-		// a modifier en qqch prenant un fichier d'init pour relier un capteur à un marqueur/articulation
-		temp.clear();
-		//1ère centrale IMU
-		sens_com.push_back(new ReadSerialCom(NUM_THREAD_SHOULDER, 4)); // 4 is the hardware port com number where is connected the Arduino board
 
-		temp.push_back("r_shoulder_xRotation");
-		temp.push_back("r_shoulder_yRotation");
-		temp.push_back("r_shoulder_zRotation");
-		sens_joint_link.push_back(temp);
+		com_name = "shoulder";
+		port_number = 3;
+		temp_link_joint.clear();
+		temp_link_joint.push_back("r_shoulder_xRotation");
+		temp_link_joint.push_back("r_shoulder_yRotation");
+		temp_link_joint.push_back("r_shoulder_zRotation");
+		addSerialCommunication(com_name, port_number, temp_link_joint, waiting_time);
 
-		sens_thr.push_back(thread(launchSerialCom, this, (sens_com.back()), waiting_time));
-
-		// 2ème centrale IMU
-		sens_com.push_back(new ReadSerialCom(NUM_THREAD_BACK, 3)); // 3 is the hardware port com number where is connected the Arduino board
-
-		temp.clear();
-		temp.push_back("r_helbow_xRotation");
-		temp.push_back("r_helbow_yRotation");
-		temp.push_back("r_helbow_zRotation");
-		sens_joint_link.push_back(temp);
-
-		sens_thr.push_back(thread(launchSerialCom, this, (sens_com.back()), waiting_time));
+		com_name = "back";
+		port_number = 4;
+		temp_link_joint.clear();
+		temp_link_joint.push_back("r_helbow_xRotation");
+		temp_link_joint.push_back("r_helbow_yRotation");
+		temp_link_joint.push_back("r_helbow_zRotation");
+		addSerialCommunication(com_name, port_number, temp_link_joint, waiting_time);
 	//}
 
 	sens_samples.resize(nbr_sensors);
 	writeHeaderInFile(getAssocietedFilePointer(), getDataFormat(), getDataToWrite());
 }
 
-void Multiple_Sensor_Reading::addNewSample(Sample& _s, int num_thread)
+void Multiple_Sensor_Reading::addNewSample(Sample& _s, size_t num_thread)
 {
 	mtx.lock();
 	sens_samples[num_thread].push_back(_s);
@@ -66,7 +65,7 @@ void Multiple_Sensor_Reading::addNewSample(Sample& _s, int num_thread)
 	mtx.unlock();
 }
 
-void Multiple_Sensor_Reading::closeThread(int num_thread)
+void Multiple_Sensor_Reading::closeThread(size_t num_thread)
 {
 	if (num_thread < sens_com.size())
 	{
@@ -89,4 +88,38 @@ void Multiple_Sensor_Reading::stopReading()
 	{
 		sens_thr[i].join();
 	}
+}
+
+void Multiple_Sensor_Reading::addSerialCommunication(string& com_name, size_t _num_port, vector<string>& joint_link, DATA_TYPE waiting_time)
+{
+	sens_name.push_back(com_name);
+	sens_joint_link.push_back(joint_link);
+	sens_com.push_back(new ReadSerialCom(sens_com.size(), _num_port));
+	sens_thr.push_back(thread(launchSerialCom, this, sens_com.back(), waiting_time));
+}
+
+bool Multiple_Sensor_Reading::findThreadByPortNumber(const size_t num_port, size_t& pos)
+{
+	for (size_t i = 0; i < sens_com.size(); i++)
+	{
+		if (sens_com[i]->getNumPort() == num_port)
+		{
+			pos = i;
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Multiple_Sensor_Reading::findThreadByName(const string& name, size_t& pos)
+{
+	for (size_t i = 0; i < sens_name.size(); i++)
+	{
+		if (sens_name[i].compare(name) == 0)
+		{
+			pos = i;
+			return true;
+		}
+	}
+	return false;
 }

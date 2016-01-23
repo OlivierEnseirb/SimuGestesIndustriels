@@ -10,14 +10,14 @@ IMU_maths::~IMU_maths()
     //dtor
 }
 
-void IMU_maths::accelerationIntegration1Axe(const double acceleration, double& velocity, double& position, const double initial_position, const double initial_velocity, const double deltaTime)
+void IMU_maths::accelerationIntegration1Axe(const DATA_TYPE acceleration, DATA_TYPE& velocity, DATA_TYPE& position, const DATA_TYPE initial_position, const DATA_TYPE initial_velocity, const DATA_TYPE deltaTime)
 {
-    double instant_velocity = acceleration * deltaTime;
+    DATA_TYPE instant_velocity = acceleration * deltaTime;
     velocity = instant_velocity + initial_velocity;
     position = instant_velocity * deltaTime /2 + initial_velocity * deltaTime + initial_position;
 }
 
-void IMU_maths::accelerationIntegration3Axes(const Vec3 acceleration, Vec3& velocity, Vec3& position, const Vec3 initial_position, const Vec3 initial_velocity, const double deltaTime)
+void IMU_maths::accelerationIntegration3Axes(const Vec3 acceleration, Vec3& velocity, Vec3& position, const Vec3 initial_position, const Vec3 initial_velocity, const DATA_TYPE deltaTime)
 {
     accelerationIntegration1Axe(acceleration.x, velocity.x, position.x, initial_position.x, initial_velocity.x, deltaTime);
     accelerationIntegration1Axe(acceleration.y, velocity.y, position.y, initial_position.y, initial_velocity.y, deltaTime);
@@ -26,7 +26,7 @@ void IMU_maths::accelerationIntegration3Axes(const Vec3 acceleration, Vec3& velo
 
 void IMU_maths::accelerationIntegration3Axes(Sample& new_sample, Sample& previous_sample)
 {
-    double deltaTime = new_sample.timestamp - previous_sample.timestamp;
+    DATA_TYPE deltaTime = new_sample.timestamp - previous_sample.timestamp;
     accelerationIntegration3Axes(new_sample.acceleration, new_sample.velocity, new_sample.position, previous_sample.position, previous_sample.velocity, deltaTime);
 }
 
@@ -157,11 +157,8 @@ DATA_TYPE IMU_maths::NormQuaternion(const Vec4 q)
     return sqrt(q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z);
 }
 
-void IMU_maths::QuaternionToOrthogonalMatrix(const Vec4 q_in, DATA_TYPE matrix[MAT_SIZE][MAT_SIZE])
+void IMU_maths::QuaternionToOrthogonalMatrix(const Vec4 q, RotMat matrix)
 {
-	Vec4 q = q_in;
-	NormalizeQuaternion(q);
-
 	DATA_TYPE w2 = q.w * q.w;
 	DATA_TYPE x2 = q.x * q.x;
 	DATA_TYPE y2 = q.y * q.y;
@@ -173,28 +170,28 @@ void IMU_maths::QuaternionToOrthogonalMatrix(const Vec4 q_in, DATA_TYPE matrix[M
 	DATA_TYPE wz = q.w * q.z;
 	DATA_TYPE xz = q.w * q.z;
 
-	matrix[0][0] = w2 + x2 - y2 - z2;
+	matrix[0][0] = 1 - 2*(y2 + z2);//w2 + x2 - y2 - z2;
 	matrix[0][1] = 2 * xy - 2 * wz;
 	matrix[0][2] = 2 * wy - 2 * xz;
 
 	matrix[1][0] = 2 * wz + 2 * xy;
-	matrix[1][1] = w2 - x2 + y2 - z2;
+	matrix[1][1] = 1 - 2*(x2 + z2);//w2 - x2 + y2 - z2;
 	matrix[1][2] = 2 * yz - 2 * wx;
 
 	matrix[2][0] = 2 * xz - 2 * wy;
 	matrix[2][1] = 2 * wx + 2 * yz;
-	matrix[2][2] = w2 - x2 - y2 + z2;
+	matrix[2][2] = 1 - 2*(x2 + y2);//w2 - x2 - y2 + z2;
 }
 
-void IMU_maths::OrthogonalMatrixToQuaternion(const  DATA_TYPE matrix[MAT_SIZE][MAT_SIZE], Vec4& q)
+void IMU_maths::OrthogonalMatrixToQuaternion(const RotMat matrix, Vec4& q)
 {
-	q.w = 0.5 * sqrtf(1 + matrix[0][0] + matrix[1][1] + matrix[2][2]);
-	q.x = 0.25 / q.w * (matrix[3][2] - matrix[2][3]);
-	q.y = 0.25 / q.w * (matrix[1][3] - matrix[3][1]);
-	q.z = 0.25 / q.w * (matrix[2][1] - matrix[1][2]);
+	q.w = 0.5f * sqrtf((float)(1.0f + matrix[0][0] + matrix[1][1] + matrix[2][2]));
+	q.x = 0.25f / q.w * (matrix[2][1] - matrix[1][2]);
+	q.y = 0.25f / q.w * (matrix[0][2] - matrix[2][0]);
+	q.z = 0.25f / q.w * (matrix[1][0] - matrix[0][1]);
 }
 
-void IMU_maths::displayMatrix(const DATA_TYPE matrix[MAT_SIZE][MAT_SIZE])
+void IMU_maths::displayMatrix(const RotMat matrix)
 {
 	for (int i = 0; i < MAT_SIZE; i++)
 	{
@@ -209,35 +206,35 @@ void IMU_maths::displayMatrix(const DATA_TYPE matrix[MAT_SIZE][MAT_SIZE])
 	}
 }
 
-void IMU_maths::addMatrix(const DATA_TYPE matrix1[MAT_SIZE][MAT_SIZE], const DATA_TYPE matrix2[MAT_SIZE][MAT_SIZE], DATA_TYPE result[MAT_SIZE][MAT_SIZE])
+void IMU_maths::addMatrix(const RotMat matrix1, const RotMat matrix2, RotMat result)
 {
 	for (int c = 0; c < MAT_SIZE; c++)
 		for (int d = 0; d < MAT_SIZE; d++)
 			result[c][d] = matrix1[c][d] + matrix2[c][d];
 }
 
-void IMU_maths::subMatrix(const DATA_TYPE matrix1[MAT_SIZE][MAT_SIZE], const DATA_TYPE matrix2[MAT_SIZE][MAT_SIZE], DATA_TYPE result[MAT_SIZE][MAT_SIZE])
+void IMU_maths::subMatrix(const RotMat matrix1, const RotMat matrix2, RotMat result)
 {
 	for (int c = 0; c < MAT_SIZE; c++)
 		for (int d = 0; d < MAT_SIZE; d++)
 			result[c][d] = matrix1[c][d] - matrix2[c][d];
 }
 
-void IMU_maths::mulMatrix(const DATA_TYPE matrix1[MAT_SIZE][MAT_SIZE], const DATA_TYPE matrix2[MAT_SIZE][MAT_SIZE], DATA_TYPE result[MAT_SIZE][MAT_SIZE])
+void IMU_maths::mulMatrix(const RotMat matrix1, const RotMat matrix2, RotMat result)
 {
 	for (int c = 0; c < MAT_SIZE; c++)
 		for (int d = 0; d < MAT_SIZE; d++)
 			result[c][d] = matrix1[c][0] * matrix2[0][d] + matrix1[c][1] * matrix2[1][d] + matrix1[c][2] * matrix2[2][d];
 }
 
-void IMU_maths::mulMatrix(const DATA_TYPE matrix1[MAT_SIZE][MAT_SIZE], const DATA_TYPE real, DATA_TYPE result[MAT_SIZE][MAT_SIZE])
+void IMU_maths::mulMatrix(const RotMat matrix1, const DATA_TYPE real, RotMat result)
 {
 	for (int c = 0; c < MAT_SIZE; c++)
 		for (int d = 0; d < MAT_SIZE; d++)
 			result[c][d] = real * matrix1[c][d];
 }
 
-void IMU_maths::traMatrix(const DATA_TYPE matrix[MAT_SIZE][MAT_SIZE], DATA_TYPE result[MAT_SIZE][MAT_SIZE])
+void IMU_maths::traMatrix(const RotMat matrix, RotMat result)
 {
 	copMatrix(matrix, result);
 	result[0][1] = matrix[1][0];
@@ -248,7 +245,7 @@ void IMU_maths::traMatrix(const DATA_TYPE matrix[MAT_SIZE][MAT_SIZE], DATA_TYPE 
 	result[2][1] = matrix[1][2];
 }
 
-void IMU_maths::copMatrix(const DATA_TYPE matrix1[MAT_SIZE][MAT_SIZE], DATA_TYPE matrix2[MAT_SIZE][MAT_SIZE])
+void IMU_maths::copMatrix(const RotMat matrix1, RotMat matrix2)
 {
 	for (int c = 0; c < MAT_SIZE; c++)
 		for (int d = 0; d < MAT_SIZE; d++)

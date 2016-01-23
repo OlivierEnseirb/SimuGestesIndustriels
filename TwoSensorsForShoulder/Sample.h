@@ -8,9 +8,9 @@
 
 #include <stdio.h>
 
-#define DATA_TYPE           double
+#define DATA_TYPE			   double // format of all data
 
-#define ENABLE_NOTHING		   0x00
+#define ENABLE_NOTHING		   0x00 //what is enable for display and writting
 #define ENABLE_ACCELERETION    0x01
 #define ENABLE_ANGULAR_RATE    0x02
 #define ENABLE_MAGNETIC_FIELD  0x04
@@ -18,10 +18,11 @@
 #define ENABLE_POSITION        0x10
 #define ENABLE_EULER           0x20
 #define ENABLE_QUATERNION      0x40
+#define ENABLE_ALL			   0xFF
 
 using namespace std;
 
-class Vec3{
+class Vec3{ //vector of size 3
     public:
         Vec3(){}
         Vec3(DATA_TYPE _x, DATA_TYPE _y, DATA_TYPE _z){x=_x; y=_y; z=_z;}
@@ -31,7 +32,7 @@ class Vec3{
         DATA_TYPE z;
 };
 
-class Vec4{
+class Vec4{ // vector of size 4
     public:
         Vec4(){}
         Vec4(DATA_TYPE _w, DATA_TYPE _x, DATA_TYPE _y, DATA_TYPE _z){w=_w; x=_x; y=_y; z=_z;}
@@ -49,11 +50,11 @@ class Sample
         Sample();
         //Sample(Sample& _s);
         Sample(const Sample& _s);
-        Sample(int _num_frame, double _timestamp, Vec3 _acceleration, Vec3 _angularRate, Vec3 _magneticField, Vec3 _velocity, Vec3 _position, Vec4 _quaternion);
+        Sample(int _num_frame, DATA_TYPE _timestamp, Vec3 _acceleration, Vec3 _angularRate, Vec3 _magneticField, Vec3 _velocity, Vec3 _position, Vec4 _quaternion);
         virtual ~Sample();
 
         int num_frame = 0;
-        double timestamp = 0.0;
+        DATA_TYPE timestamp = 0.0;
         Vec3 acceleration = Vec3(0.0,0.0,0.0);
         Vec3 angularRate = Vec3(0.0,0.0,0.0);
         Vec3 magneticField = Vec3(0.0,0.0,0.0);
