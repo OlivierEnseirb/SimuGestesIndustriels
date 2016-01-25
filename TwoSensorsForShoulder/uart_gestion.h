@@ -1,5 +1,6 @@
 /***************************************
-* Author : Olivier Hartmann & Amandine Rémont (nov. 2015)
+* Author : Amandine Rémont (Nov. 2015)
+* Update janv. 2016 by Olivier Hartmann
 * This object is used to read a serial port
 ***************************************/
 
@@ -13,16 +14,17 @@
 #include <conio.h>
 #include <string>
 #include <sstream>
+#include "settings.h"
 
 using namespace std;
 
 //Définition des constantes
-#define RX_SIZE 4096 //taille du buffer de réception des données
-#define TX_SIZE 4096 //taille du buffer de transmission des données
-#define WAIT_READ 5000   //temps d'attente en ms pour la lecture
+#define RX_SIZE		4096 //taille du buffer de réception des données
+#define TX_SIZE		4096 //taille du buffer de transmission des données
+#define WAIT_READ	5000   //temps d'attente en ms pour la lecture
 
 
-class UART_gestion
+class UART_gestion : public Settings
 {
     //déclaration des variables de fonctionnement du port série
 private:
@@ -80,11 +82,12 @@ public:
     UART_gestion();
     ~UART_gestion();
 
-    bool OpenCOM(int nId, string& error_message);
-    bool CloseCOM(void);
-    bool ReadCOM(void* buffer, int nBytesToRead, int* pBytesRead);
-    bool WriteCOM(void* buffer, int nBytesToWrite, int* pBytesWritten);
-    void SetDcbStructure(int _baud, int _nbBits, int _nbStop, int _parity);
+    bool OpenCOM(int nId, string& error_message); //opening the serial port communication on the serial port number "nId"
+    bool CloseCOM(void); // closing the running Serial Communication
+    bool ReadCOM(void* buffer, int nBytesToRead, int* pBytesRead); // get data from the serial port
+    bool WriteCOM(void* buffer, int nBytesToWrite, int* pBytesWritten); // write data on the serial port
+    void SetDcbStructure(int _baud, int _nbBits, int _nbStop, int _parity); // initialize the serial port with parameters given in arguments
+	void SetDcbStructure(); // initialize the serial port with parameters written in the "Settings" object 
 };
 
 #endif // UART_GESTION_H

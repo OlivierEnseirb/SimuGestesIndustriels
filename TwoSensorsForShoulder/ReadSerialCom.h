@@ -15,8 +15,9 @@
 using namespace std;
 
 #define BUFF_SIZE           16
-#define END_SAMPLE_CLUE     '\n' // caractere of the end 
-#define SEPARATING_CLUE     ','
+#define END_SAMPLE_CLUE     '\n' // character of the end of the protocol of communication
+#define SEPARATING_CLUE     ',' // character seperating the data in the protocol of com
+#define LIMIT_TIME_BETWEEN_TWO_RECEPTIONS   5 //seconds
 
 class Multiple_Sensor_Reading; // class declared somewhere else and included in .cpp
 
@@ -38,20 +39,19 @@ class ReadSerialCom
         bool waitEndDataClue(size_t& pos); // indicates if END_SAMPLE_CLUE caracter has been received and give the position in "big_buffer"
         void setNewSample(string& newSampleString); //set new_sample with the data given as a string
         void convertStringToSample(string& newSampleString, Sample& _sample); // convert data as string size_to a "Sample" object
-		bool checkGoodCommunication(DATA_TYPE limit_time); // watch the time between two communications if it is not too long
+		bool checkGoodCommunication(); // watch the time between two communications if it is not too long
 
-        Sample new_sample = defaultSample;
-        Sample previous_sample = defaultSample;
+        Sample new_sample = defaultSample; // variable where is stocked the new sample
+        Sample previous_sample = defaultSample; // variable where is stocked the sample arrived before the new one
 
 		size_t getNumThread() { return num_thread; }
 		void setNumThread(size_t _nt) { num_thread = _nt; }
-		size_t getNumPort() { return (size_t)set_data->getComNumber(); }
+		size_t getNumPort() { return (size_t)serial_com->getComNumber(); }
 
 		bool keep_processing = true; // indicates if the serial port has to be reading anymore
 
     private:
-		Settings* set_data = new Settings();
-		UART_gestion* serial_com = new UART_gestion();
+		UART_gestion* serial_com = new UART_gestion(); // object used to read the serial com
 
 
         char serial_buffer[BUFF_SIZE]; // buffer that gets data directly from the serial port

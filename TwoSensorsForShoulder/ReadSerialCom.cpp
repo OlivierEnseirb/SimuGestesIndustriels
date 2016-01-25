@@ -23,7 +23,7 @@ bool ReadSerialCom::launchSerialCommunication(Multiple_Sensor_Reading* msr, DATA
 			if (!readSerialCommunication())
 				return false;
 
-			if (!checkGoodCommunication(5)) {
+			if (!checkGoodCommunication()) {
 				cout << "Time to long between two communications on Serial COM "<< getNumPort()<<"." << endl;
 				return false;
 			}
@@ -54,53 +54,44 @@ void ReadSerialCom::initSerialCommunication(size_t _num_thread, size_t _num_port
 	setNumThread(_num_thread);
 
     //lecture du fichier de config et récupération des données
-    set_data->getSettings("init.txt");
-	set_data->setComNumber((int)_num_port);
+	serial_com->getSettings("init.txt");
+	serial_com->setComNumber((int)_num_port);
 
     //configuration de la strucutre concernant la com série en fonction des données du fichier de config
-    serial_com->SetDcbStructure(set_data->getBaud(), set_data->getNbBits(), set_data->getBitsStop(), set_data->getParity());
+	serial_com->SetDcbStructure();// serial_com->getBaud(), serial_com->getNbBits(), serial_com->getBitsStop(), serial_com->getParity());
 }
 
 bool ReadSerialCom::openSerialCommunication(DATA_TYPE waiting_time)
 {
     //ouverture du port com en fonction du numéro donné dans le fichier de config
-    cout << "tentative d'ouverture du COM" << set_data->getComNumber() << endl;
+    cout << "tentative d'ouverture du COM" << serial_com->getComNumber() << endl;
 
 	time_t init_time, current_time;
 	time(&init_time); //get time at the begining of the function
 
 	string error_message;
 
-	while (!(serial_com->OpenCOM(set_data->getComNumber(), error_message)))
+	while (!(serial_com->OpenCOM(serial_com->getComNumber(), error_message)))
 	{
+		if (!keep_processing) // check if the thread has not been asked to be closed
+			return false;
+
 		time(&current_time);
 		if (difftime(current_time, init_time) > waiting_time)
 		{
-			cout << "COM Serie " << set_data->getComNumber() << " n'a pas pu etre ouverte apres " << waiting_time <<" senconds." << endl;
+			cout << "COM Serie " << serial_com->getComNumber() << " n'a pas pu etre ouverte apres " << waiting_time <<" senconds." << endl;
 			cout << "Message d'erreur : " << error_message << endl;
 			return false;
 		}
 	}
 	time(&last_time_data_obtained);
-	cout << "COM Serie "<< set_data->getComNumber() << " ouverte et prete a l'emploi." << endl;
+	cout << "COM Serie "<< serial_com->getComNumber() << " ouverte et prete a l'emploi." << endl;
 	return true;
-	
-	/*
-    if( serial_com->OpenCOM(set_data->getComNumber())){
-        //la communication série est ouverture
-        cout << "COM Serie ouverte et prete a l'emploi" << endl;
-        return true;
-    }
-    else
-    {
-        cout<<" La COM" << set_data->getComNumber() << " n'a pas pu être ouverte."<<endl;
-        return false;
-    }*/
 }
 
 void ReadSerialCom::closeSerialCommunication()
 {
-	cout << "COM Serie " << set_data->getComNumber() << " fermee." << endl;
+	cout << "COM Serie " << serial_com->getComNumber() << " fermee." << endl;
     serial_com->CloseCOM();
 }
 
@@ -114,40 +105,49 @@ void ReadSerialCom::setNewSample(string& newSampleString)
     previous_sample = new_sample;
     convertStringToSample(newSampleString, new_sample);
     new_sample.num_frame = previous_sample.num_frame + 1;
+	/* TO DO
+	 * ajouter timestamp au samples
+	 * calculer diff_time_between_samples
+	 * new_sample.timestamp = previous_sample.timestamp + diff_time_between_samples;
+	 */
 }
 
 void ReadSerialCom::convertStringToSample(string& newSampleString, Sample& _sample)
 {
+	/* TO DO
+	 * prendre en compte, éventuellement, le timestamp dans le protocole et le type de donnée en entrée (QUATERNION ou ACCELERATION ou EULER ...)
+	 */
     size_t pos = 0;
-    float buf_float;
+    DATA_TYPE buf_realNumber;
     Vec4 data(0.0, 0.0, 0.0, 0.0);
     size_t data_indice = 0;
 
-    newSampleString += SEPARATING_CLUE;
+    newSampleString += SEPARATING_CLUE; // add this clue to take into account the last data
 
-    while(pos != newSampleString.npos)
+    while(pos != newSampleString.npos) // while a new data is found
     {
         data_indice++;
         pos = newSampleString.find_first_of(SEPARATING_CLUE);
         string sub_str = newSampleString.substr(0,pos+1);
         newSampleString.erase(0,pos+1);
-        stringstream ss;
+        
+		stringstream ss; 
         ss << sub_str;
-        ss >> buf_float;
+        ss >> buf_realNumber; //convert string to real number of the same type than buf_realNumber
 
         switch(data_indice)
         {
         case 1:
-            data.w = buf_float;
+            data.w = buf_realNumber;
             break;
         case 2:
-            data.x = buf_float;
+            data.x = buf_realNumber;
             break;
         case 3:
-            data.y = buf_float;
+            data.y = buf_realNumber;
             break;
         case 4:
-            data.z = buf_float;
+            data.z = buf_realNumber;
             break;
         default:
             break;
@@ -170,11 +170,12 @@ bool ReadSerialCom::waitEndDataClue(size_t& pos)
     return pos != big_buffer.npos;
 }
 
-bool ReadSerialCom::checkGoodCommunication(DATA_TYPE limit_time)
+bool ReadSerialCom::checkGoodCommunication()
 {
 	time_t current_time;
 	time(&current_time);
-	bool temp = (difftime(current_time, last_time_data_obtained) < limit_time);
-	last_time_data_obtained = current_time;
+	bool temp = (difftime(current_time, last_time_data_obtained) < LIMIT_TIME_BETWEEN_TWO_RECEPTIONS);
+	if(nb_bytes_read)
+		last_time_data_obtained = current_time;
 	return temp;
 }

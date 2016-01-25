@@ -46,6 +46,10 @@ class IMU_maths
         void writeDataInFile(FILE* file, DATA_FORMAT _df, Sample& data, unsigned char data_to_write); // write the data from the sample "data" into the file "file" according to the selected data to write in "data_to_write"
         void writeHeaderInFile(FILE* _file, DATA_FORMAT _df, unsigned char data_to_write);// write the data from the sample "data" into the file "file" according to the selected data to write in "data_to_write"
 
+		/* TO DO
+		 * si nécessaire, faire un seul objet avec template permettant de créer des matrices et des vecteurs.
+		 * Cela permettrait d'avoir un code plus propre et de regrouper les matrices avec Vec4 et Vec3 et surtout d'avoir accès à des matrices de toutes tailles en utilisant les mêmes méthodes adaptables aux tailles des matrices pour les calculs
+		 */
 		void displayMatrix(const RotMat matrix); // display the given matrix
 		void addMatrix(const RotMat matrix1, const RotMat matrix2, RotMat result); // result = mat1 + mat2
 		void subMatrix(const RotMat matrix1, const RotMat matrix2, RotMat result); // result = mat1 - mat2

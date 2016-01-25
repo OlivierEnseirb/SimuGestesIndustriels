@@ -1,5 +1,6 @@
 /***************************************
-* Author : Olivier Hartmann & Amandine Rémont (Nov. 2015)
+* Author : Amandine Rémont (Nov. 2015)
+* Update janv. 2016 by Olivier Hartmann
 * This object is used to configure a serial communication
 ***************************************/
 
@@ -43,7 +44,7 @@ public:
     int getBitsStop(void);
     int getParity(void);
     int getComNumber(void);
-    void getSettings(const string& filename);
+    void getSettings(const string& filename); // reads the given file and fills its attributs with what is written inside the file
     void setComNumber(int _com);
 
 protected:

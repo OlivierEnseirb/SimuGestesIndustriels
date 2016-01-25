@@ -32,14 +32,12 @@ void IMU_maths::accelerationIntegration3Axes(Sample& new_sample, Sample& previou
 
 void IMU_maths::writeDataInFile(FILE* file, DATA_FORMAT _df, Sample& data, unsigned char data_to_write)
 {
-    if(file != NULL)
+    if((file != NULL) && (data_to_write != ENABLE_NOTHING))
         switch(_df)
         {
         case CSV :
-				if(data_to_write)
-					// Timestamp, then Accel X,Y,Z, then Ang Rate X,Y,Z then Mag Field X,Y,Z then velocity the position
 				    fprintf(file, "%f", data.timestamp);
-                if(data_to_write & ENABLE_ACCELERETION)
+                if(data_to_write & ENABLE_ACCELERETION)// & is good, and not && !
                     fprintf(file, ",%6f,%6f,%6f", data.acceleration.x, data.acceleration.y, data.acceleration.z);
                 if(data_to_write & ENABLE_ANGULAR_RATE)
                     fprintf(file, ",%6f,%6f,%6f", data.angularRate.x, data.angularRate.y, data.angularRate.z);
@@ -63,7 +61,7 @@ void IMU_maths::writeDataInFile(FILE* file, DATA_FORMAT _df, Sample& data, unsig
                     fprintf(file, ",%6f,%6f,%6f,%6f", data.quaternion.w, data.quaternion.x, data.quaternion.y, data.quaternion.z);
                 if(data_to_write & ENABLE_EULER)
                     fprintf(file, ",%6f,%6f,%6f", data.euler.x, data.euler.y, data.euler.z);
-				if (data_to_write)
+
 					fprintf(file, "\n");
             break;
         case TRC:
@@ -71,18 +69,18 @@ void IMU_maths::writeDataInFile(FILE* file, DATA_FORMAT _df, Sample& data, unsig
                 fprintf(file, "%6f\t%6f\t%6f\n", data.position.x, data.position.y, data.position.z);
             break;
         }
-        fflush(file);
+
+        fflush(file); // order the data written in the file to be written on the harddisk and not just in the RAM buffer of the file
 }
 
 void IMU_maths::writeHeaderInFile(FILE* _file, DATA_FORMAT _df, unsigned char data_to_write)
 {
-    if(_file != NULL)
+    if((_file != NULL) && (data_to_write != ENABLE_NOTHING))
         switch(_df)
         {
         case CSV :
-			if (data_to_write)
 				fprintf(_file, "Time");
-            if(data_to_write & ENABLE_ACCELERETION)
+            if(data_to_write & ENABLE_ACCELERETION) // & is good, and not && !
                 fprintf(_file, ",Accel_X,Accel_Y,Accel_Z");
             if(data_to_write & ENABLE_ANGULAR_RATE)
                 fprintf(_file, ",Ang_X,Ang_Y,Ang_Z");
@@ -96,7 +94,7 @@ void IMU_maths::writeHeaderInFile(FILE* _file, DATA_FORMAT _df, unsigned char da
                 fprintf(_file, ",Qua_A,Qua_B,Qua_C,Qua_D");
             if(data_to_write & ENABLE_EULER)
                 fprintf(_file, ",Eul_A,Eul_B,Eul_C");
-			if(data_to_write)
+			
 				fprintf(_file, "\n");
             break;
 
@@ -109,6 +107,8 @@ void IMU_maths::writeHeaderInFile(FILE* _file, DATA_FORMAT _df, unsigned char da
 
             break;
         }
+
+	fflush(_file); // order the data written in the file to be written on the harddisk and not just in the RAM buffer of the file
 }
 
 void IMU_maths::QuaternionToEuler(const Vec4 q, Vec3& v)
@@ -170,17 +170,17 @@ void IMU_maths::QuaternionToOrthogonalMatrix(const Vec4 q, RotMat matrix)
 	DATA_TYPE wz = q.w * q.z;
 	DATA_TYPE xz = q.w * q.z;
 
-	matrix[0][0] = 1 - 2*(y2 + z2);//w2 + x2 - y2 - z2;
+	matrix[0][0] = (DATA_TYPE)1.0 - 2*(y2 + z2);//w2 + x2 - y2 - z2;
 	matrix[0][1] = 2 * xy - 2 * wz;
 	matrix[0][2] = 2 * wy - 2 * xz;
 
 	matrix[1][0] = 2 * wz + 2 * xy;
-	matrix[1][1] = 1 - 2*(x2 + z2);//w2 - x2 + y2 - z2;
+	matrix[1][1] = (DATA_TYPE)1.0 - 2*(x2 + z2);//w2 - x2 + y2 - z2;
 	matrix[1][2] = 2 * yz - 2 * wx;
 
 	matrix[2][0] = 2 * xz - 2 * wy;
 	matrix[2][1] = 2 * wx + 2 * yz;
-	matrix[2][2] = 1 - 2*(x2 + y2);//w2 - x2 - y2 + z2;
+	matrix[2][2] = (DATA_TYPE)1.0 - 2*(x2 + y2);//w2 - x2 - y2 + z2;
 }
 
 void IMU_maths::OrthogonalMatrixToQuaternion(const RotMat matrix, Vec4& q)

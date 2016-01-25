@@ -1,3 +1,8 @@
+/***************************************
+* Author : Amandine Rémont (Nov. 2015)
+* Update janv. 2016 by Olivier Hartmann
+* This object is used to read a serial port
+***************************************/
 #include "uart_gestion.h"
 
 UART_gestion::UART_gestion()
@@ -162,4 +167,58 @@ void UART_gestion::SetDcbStructure(int _baud, int _nbBits, int _nbStop, int _par
         g_dcb.Parity = NOPARITY;
         break;
     }
+}
+
+//FONCTION DE REMPLISSAGE DE LA STRUCTURE DE CONFIGURATION DU PORT COM AVEC DONNEES DE LA COM
+void UART_gestion::SetDcbStructure() {
+	//configuration du BaudRate
+	g_dcb.BaudRate = getBaud();
+	//configuration du nombre de bits de données
+	g_dcb.ByteSize = getNbBits();
+	//configuration du nombre de bits de Stop
+	switch (getBitsStop()) {
+	case 0:
+		//1 bit de stop
+		g_dcb.StopBits = ONESTOPBIT;
+		break;
+	case 1:
+		//1.5 bits de stop
+		g_dcb.StopBits = ONE5STOPBITS;
+		break;
+	case 2:
+		//2 bits de stop
+		g_dcb.StopBits = TWOSTOPBITS;
+		break;
+	default:
+		//1 bit de stop par défaut
+		g_dcb.StopBits = ONESTOPBIT;
+		break;
+	}
+	//Configuration de la parité
+	switch (getParity()) {
+	case 0:
+		//pas de parité
+		g_dcb.Parity = NOPARITY;
+		break;
+	case 1:
+		//parité impaire
+		g_dcb.Parity = ODDPARITY;
+		break;
+	case 2:
+		//parité parire
+		g_dcb.Parity = EVENPARITY;
+		break;
+	case 3:
+		//mark parity
+		g_dcb.Parity = MARKPARITY;
+		break;
+	case 4:
+		//space parity
+		g_dcb.Parity = SPACEPARITY;
+		break;
+	default:
+		//pas de parité
+		g_dcb.Parity = NOPARITY;
+		break;
+	}
 }

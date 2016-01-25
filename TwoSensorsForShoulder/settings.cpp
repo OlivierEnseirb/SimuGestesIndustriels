@@ -1,3 +1,8 @@
+/***************************************
+* Author : Amandine Rémont (Nov. 2015)
+* Update janv. 2016 by Olivier Hartmann
+* This object is used to configure a serial communication
+***************************************/
 #include "settings.h"
 
 
@@ -32,7 +37,7 @@ void Settings::getSettings(const string &filename){
     string buf, cle, value;
     size_t pos;
 
-    cout << "Start getting the settings for the serial communication" << endl;
+    //cout << "Start getting the settings for the serial communication" << endl;
 
     ifstream file(filename, ifstream::in);
 
@@ -60,7 +65,7 @@ void Settings::getSettings(const string &filename){
         file.close();
     }
     else
-        cout << "error opening the settings file" << endl;
+        cerr << "Error while opening the setting file for Serial communication." << endl;
 
 }
 

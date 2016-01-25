@@ -1,8 +1,15 @@
-﻿Build started 23/01/2016 20:23:34.
+﻿Build started 25/01/2016 20:05:37.
      1>Project "C:\Users\Olivier\Desktop\ExampleMain\build\exampleMain.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /I\Vendors /I"C:\OpenSim 3.3\sdk\include\SimTK\include" /I"C:\OpenSim 3.3\sdk\include" /nologo /W3 /WX- /O2 /Ob2 /D WIN32 /D _WINDOWS /D NDEBUG /D "CMAKE_INTDIR=\"Release\"" /D _MBCS /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"exampleMain.dir\Release\\" /Fd"exampleMain.dir\Release\vc140.pdb" /Gd /TP /errorReport:prompt C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /I\Vendors /I"C:\OpenSim 3.3\sdk\include\SimTK\include" /I"C:\OpenSim 3.3\sdk\include" /nologo /W3 /WX- /O2 /Ob2 /D WIN32 /D _WINDOWS /D NDEBUG /D "CMAKE_INTDIR=\"Release\"" /D _MBCS /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"exampleMain.dir\Release\\" /Fd"exampleMain.dir\Release\vc140.pdb" /Gd /TP /errorReport:prompt C:\Users\Olivier\Desktop\ExampleMain\Multiple_sensor_reading.cpp C:\Users\Olivier\Desktop\ExampleMain\ReadSerialCom.cpp C:\Users\Olivier\Desktop\ExampleMain\TugOfWar1_CreateModel.cpp C:\Users\Olivier\Desktop\ExampleMain\settings.cpp C:\Users\Olivier\Desktop\ExampleMain\uart_gestion.cpp
+         Multiple_sensor_reading.cpp
+         ReadSerialCom.cpp
          TugOfWar1_CreateModel.cpp
+         settings.cpp
+         uart_gestion.cpp
+     1>C:\Users\Olivier\Desktop\ExampleMain\uart_gestion.cpp(99): warning C4800: 'BOOL': forcing value to bool 'true' or 'false' (performance warning)
+     1>C:\Users\Olivier\Desktop\ExampleMain\uart_gestion.cpp(115): warning C4800: 'BOOL': forcing value to bool 'true' or 'false' (performance warning)
+         Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Olivier\Desktop\ExampleMain\build\Release\exampleMain.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:/OpenSim 3.3/sdk/lib" /LIBPATH:"C:/OpenSim 3.3/sdk/lib/Release" /LIBPATH:"C:/OpenSim 3.3/lib" /LIBPATH:"C:/OpenSim 3.3/lib/Release" /LIBPATH:"C:/OpenSim 3.3/bin" /LIBPATH:"C:/OpenSim 3.3/bin/Release" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib osimSimulation.lib osimActuators.lib osimCommon.lib osimAnalyses.lib osimTools.lib OpenSim_SimTKcommon.lib OpenSim_SimTKmath.lib OpenSim_SimTKsimbody.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"C:/Users/Olivier/Desktop/ExampleMain/build/Release/exampleMain.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/Olivier/Desktop/ExampleMain/build/Release/exampleMain.lib" /MACHINE:X64  /machine:x64 exampleMain.dir\Release\IMU_maths.obj
          exampleMain.dir\Release\Multiple_sensor_reading.obj
@@ -27,4 +34,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:09.02
+Time Elapsed 00:00:19.20
